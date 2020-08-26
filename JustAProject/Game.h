@@ -13,6 +13,13 @@ enum Type
 	MOVE_LEFT,
 	MOVE_RIGHT,
 	PLANT,
+	SELECTMENU1,
+	SELECTMENU2,
+	SELECTMENU3,
+	SELECTSPMENU1,
+	SELECTSPMENU2,
+	SELECTSPMENU3,
+	QUITSPMENU,
 };
 
 struct Action
@@ -22,6 +29,12 @@ struct Action
 	glm::vec2 mouse_pos;
 };
 
+struct Menu
+{
+	string ID;
+	Sprite* icon;
+	Menu(string _ID, Sprite* _icon):ID(_ID),icon(_icon) {}
+};
 
 class Game
 {
@@ -34,22 +47,22 @@ public:
 
 	void Draw(ShaderProgram* shader);
 
-	void LoadMenu();
-
 private:
 	Sprite* background;
 	Sprite * target;
-	//Sprite* sun;
-	//Sprite* planet;
-	//Sprite* planet_mask;
-	//Sprite* planet2;
-	//Sprite* enemy;
-
+	int treeSelected;
 	Sprite *tree;
 	Sprite* main;
 	vector<Sprite*> dat;
-	bool flag, plant;
+	bool flag, plant, clickSubMenu;
 
-	Texture* bullet;
+	vector<int> field;
+	vector<Menu> menuList;
+	vector<Menu> subMenuList;
 	vector<Rectangle*> bullets;
+	vector<Sprite*> platList;
+	bool isPlanted(int location);
+	void LoadSubMenu();
+	void DesSubMenu();
+	bool destroyPlant;
 };

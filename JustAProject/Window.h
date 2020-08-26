@@ -19,6 +19,7 @@ public:
 
 	void Mainloop();
 
+
 private:
 
 	int m_width,m_height;

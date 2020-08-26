@@ -133,6 +133,41 @@ void Window::Input()
 		actions.push_back(ac);
 	}
 
+	if (glfwGetMouseButton(window_ptr, GLFW_MOUSE_BUTTON_1) == GLFW_PRESS)
+	{
+		double xpos, ypos;
+		glfwGetCursorPos(window_ptr, &xpos, &ypos);
+		Action ac;
+
+		if (xpos <= 150 && xpos >= 50)
+		{
+			cout << "X";
+			if (ypos <= 400 && ypos >= 300)
+				ac._type = SELECTMENU1;
+			else if (ypos <= 550 && ypos >= 450)
+				ac._type = SELECTMENU2;
+			else if (ypos <= 700 && ypos >= 600)
+				ac._type = SELECTMENU3;
+		}
+		//150->250 300->400
+		//300->400 300->400
+		//450->550 300->400
+		//600->700 300->400
+		if(ypos <= 400 && ypos >= 300)
+		{
+			cout << "y";
+			if (xpos <= 250 && xpos >= 150)
+				ac._type = SELECTSPMENU1;
+			else if (xpos <= 400 && xpos >= 300)
+				ac._type = SELECTSPMENU2;
+			else if (xpos <= 550 && xpos >= 450)
+				ac._type = SELECTSPMENU3;
+			else if (xpos <= 700 && xpos >= 600)
+				ac._type = QUITSPMENU;
+		}
+		actions.push_back(ac);
+	}
+
 	if (glfwGetKey(window_ptr, GLFW_KEY_SPACE))
 	{
 		Action ac;
@@ -140,26 +175,6 @@ void Window::Input()
 		actions.push_back(ac);
 	}
 
-	//int newstate = glfwGetKey(window_ptr,GLFW_KEY_SPACE);
-	//if(newstate == GLFW_RELEASE && key_state == GLFW_PRESS)
-	//{
-	//	Action ac;
-	//	ac._type = SHOOT;
-	//	actions.push_back(ac);
-	//}
-	//key_state = newstate;
-
-
-
-	//left click = 0
-	//right = 1
-	// middle = 2
-	//if(glfwGetMouseButton(window_ptr,0))
-	//{
-	//	double x , y;
-	//	glfwGetCursorPos(window_ptr,&x,&y);
-	//	glm::vec2 mouse_position(x,y);
-	//}
 
 
 	game->input(actions);
@@ -201,3 +216,5 @@ void Window::Mainloop()
 		glfwPollEvents();
 	}
 }
+
+

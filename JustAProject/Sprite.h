@@ -21,8 +21,6 @@ public:
 
 	void scale(glm::vec2 _scale);
 	glm::vec2 getposition();
-
-
 private:
 	Texture* texture;
 	Rectangle* rectangle;

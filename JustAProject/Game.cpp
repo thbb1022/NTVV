@@ -5,11 +5,6 @@ Game::Game()
 	background = new Sprite("c9ca3d19204877.562d67dc6f516.jpg",glm::vec2(0));
 	background->scale(glm::vec2(2000,2000));
 
-	//sun = new Sprite("sun.png",glm::vec2(-50,500));
-	//sun->scale(glm::vec2(400));
-
-
-
 	float x = 1400, y = 500, tmp = 0;
 	for (int i = 0; i < 81; i++)
 	{
@@ -25,67 +20,51 @@ Game::Game()
 		}
 	}
 
+	clickSubMenu = false;
+
 	tree = new Sprite("cay.png", glm::vec2(700, 700));
 	tree->scale(glm::vec2(200));
 
 	main = new Sprite("laibuon.gif", glm::vec2(700, 500));
 	main->scale(glm::vec2(100));
 
-	//tree->rr(30);
-
-
-
-
-
-
-
-	//planet = new Sprite("planet.png", glm::vec2(1200,250));
-	//planet->scale(glm::vec2(200));
-
-	//planet_mask = new Sprite("Mask Right 1.png", glm::vec2(1200,250));
-	//planet_mask->scale(glm::vec2(201));
-
-
-	//planet2 = new Sprite("planet2.png", glm::vec2(1500,500));
-	//planet2->scale(glm::vec2(600));
-
-	//enemy = new Sprite("main.png", glm::vec2(700,200));
-	//enemy->scale(glm::vec2(50));
-
-
-
-	//bullet = new Texture("bullet.png");
+	int menux = 50, menuy = 300;
+	menuList.push_back(Menu("1", new Sprite("Images\\menu\\trong.png", glm::vec2(menux, menuy))));
+	menuList[0].icon->scale(glm::vec2(100));
+	menuList.push_back(Menu("2", new Sprite("Images\\menu\\tuoi.png", glm::vec2(menux, menuy + 150))));
+	menuList[0].icon->scale(glm::vec2(100));
+	menuList.push_back(Menu("3", new Sprite("Images\\menu\\pha.png", glm::vec2(menux, menuy + 300))));
+	menuList[0].icon->scale(glm::vec2(100));
 }
 
 Game::~Game()
 {
 	delete target;
 	delete background;
-	//delete sun;
-	//delete planet;
-	//delete planet_mask;
-	//delete planet2;
 	delete main;
+	for (auto item: dat) {
+		delete item;
+	}
+	for (auto item : platList) {
+		delete item;
+	}
 }
-int i = 1;
+
 void Game::input(vector<Action> actions)
 {
-	flag = false, plant = false;
+	flag = false, plant = false, destroyPlant = false;
 	for (auto action : actions)
 	{
 		switch (action._type)
 		{
 			case MOVE_UP:
 				main->move_up(2);
-				//target->move_up(5);
 				break;
 			case MOVE_DOWN:
 				main->move_down(2);
-				//target->move_down(5);
 				break;
 			case MOVE_LEFT:
 				main->move_left(2);
-				//target->move_left(5);
 				break;
 			case MOVE_RIGHT:
 				main->move_right(2);
@@ -93,17 +72,39 @@ void Game::input(vector<Action> actions)
 			case PLANT:
 				plant = true;
 				break;
-			//case SHOOT:
-			//{
-			//	//generate rectangles as bullets
-			//	Rectangle* rect = new Rectangle();
-			//	glm::vec2 pos = main->getposition();
-			//	pos += 40;
-			//	rect->setposition(pos);
-			//	rect->setscale(glm::vec2(20,40));
-			//	bullets.push_back(rect);
-			//}
-			//	break;
+			case SELECTMENU1:
+				LoadSubMenu();
+				break;
+			case SELECTMENU2:
+				break;
+			case SELECTMENU3:
+				if (destroyPlant == true)
+					destroyPlant = false;
+				else destroyPlant = true;
+				break;
+			case SELECTSPMENU1:
+				if (clickSubMenu == true)
+				{
+					treeSelected = 1;
+				}
+				break;
+			case SELECTSPMENU2:
+				if (clickSubMenu == true)
+				{
+					treeSelected = 2;
+				}
+				break;
+			case SELECTSPMENU3:
+				if (clickSubMenu == true)
+				{
+					treeSelected = 3;
+				}
+				break;
+			case QUITSPMENU:
+				if (clickSubMenu == true)
+				{
+					DesSubMenu();
+				}
 			default:
 				break;
 		}
@@ -111,19 +112,30 @@ void Game::input(vector<Action> actions)
 	
 	for (int i = 0; i < 81; i++)
 	{
+		//x,y
 		int x = dat[i]->getposition().x, y = dat[i]->getposition().y;
-		if (/*flag == false &&*/ main->getposition().x - x <= 10
-			&& main->getposition().y - y <= 10)
+		//
+		if (main->getposition().x - x <= 10
+			&& main->getposition().y - y <= 10 )
 		{
-			//flag = true;
 			target = new Sprite("download.gif", glm::vec2(dat[i]->getposition().x + 25, dat[i]->getposition().y + 20));
 			target->scale(glm::vec2(30));
-			if (plant == true)
+			if (plant == true && isPlanted(i) == false)
 			{
-				cout << "plant";
-				dat[i] = new Sprite("nho.png", glm::vec2(x, y));
+				if(treeSelected == 1)
+					dat[i] = new Sprite("Images\\plant\\1-chin.png", glm::vec2(x, y));
+				else if (treeSelected == 2)
+					dat[i] = new Sprite("Images\\plant\\2-chin.png", glm::vec2(x, y));
+				else if (treeSelected == 3)
+					dat[i] = new Sprite("Images\\plant\\3-chin.png", glm::vec2(x, y));
 				dat[i]->scale(glm::vec2(70));
+				field.push_back(i);
 				plant = false;
+			}
+			if (destroyPlant == true)
+			{
+				dat[i] = new Sprite("0.png", glm::vec2(x, y));
+				dat[i]->scale(glm::vec2(70));
 			}
 			return;
 		}
@@ -132,67 +144,81 @@ void Game::input(vector<Action> actions)
 
 void Game::Draw(ShaderProgram* shader)
 {
+	//bg
 	shader->Send_Mat4("model_matrx", background->transformation());
 	background->draw();
 
-	/*shader->Send_Mat4("model_matrx", sun->transformation());
-	sun->draw();
-
-	shader->Send_Mat4("model_matrx", planet->transformation());
-	planet->draw();
-
-	shader->Send_Mat4("model_matrx", planet_mask->transformation());
-	planet_mask->draw();
-
-	shader->Send_Mat4("model_matrx", planet2->transformation());
-	planet2->draw();*/
-
-
+	//dat
 	for (int i = 0; i < 81; i++)
 	{
 		shader->Send_Mat4("model_matrx", dat[i]->transformation());
 		dat[i]->draw();
 	}
 
+	//sub menu
+	for (int i = 0; i < 4; i++)
+	{
+		if (!subMenuList.empty())
+		{
+			shader->Send_Mat4("model_matrx", subMenuList[i].icon->transformation());
+			subMenuList[i].icon->draw();
+		}
+	}
 
+	//menu
+	for (int i = 0; i < 3; i++)
+	{
+		shader->Send_Mat4("model_matrx", menuList[i].icon->transformation());
+		menuList[i].icon->draw();
+	}
+
+	//tree
 	shader->Send_Mat4("model_matrx", tree->transformation());
 	tree->draw();
 
+	//nv
 	shader->Send_Mat4("model_matrx", main->transformation());
 	main->draw();
 
-
-	if(target->getposition() != glm::vec2(NULL,NULL))
+	//mui ten
+	if(target->getposition() != glm::vec2(0))
 	{
 		shader->Send_Mat4("model_matrx", target->transformation());
 		target->draw();
 	}
-
-
-	/*shader->Send_Mat4("model_matrx", enemy->transformation());
-	enemy->draw()*/;
-
-
-	//bullet->use();
-	//for(size_t i =0; i < bullets.size(); ++i)
-	//{
-	//	auto tmp = bullets[i]->getposition();
-	//	if(tmp.y < -10)
-	//	{
-	//		delete bullets[i];
-	//		bullets.erase(bullets.begin() + i);
-	//		continue;
-	//	}
-
-	//	tmp.y -= 10;
-	//	bullets[i]->setposition(tmp);
-
-
-	//	shader->Send_Mat4("model_matrx", bullets[i]->GetTransformationMatrx());
-	//	bullets[i]->Draw();
-	//}
 }
 
-void Game::LoadMenu()
+void Game::LoadSubMenu()
 {
+	int menux = 150, menuy = 300;
+	subMenuList.push_back(Menu("1", new Sprite("Images\\menu\\1.png", glm::vec2(menux, menuy))));
+	subMenuList[0].icon->scale(glm::vec2(100));
+	subMenuList.push_back(Menu("2", new Sprite("Images\\menu\\2.png", glm::vec2(menux + 150, menuy))));
+	subMenuList[0].icon->scale(glm::vec2(100));
+	subMenuList.push_back(Menu("3", new Sprite("Images\\menu\\3.png", glm::vec2(menux + 300, menuy))));
+	subMenuList[0].icon->scale(glm::vec2(100));
+	subMenuList.push_back(Menu("4", new Sprite("Images\\menu\\quit.png", glm::vec2(menux + 450, menuy))));
+	subMenuList[0].icon->scale(glm::vec2(100));
+	clickSubMenu = true;
 }
+
+void Game::DesSubMenu()
+{
+	subMenuList.clear();
+}
+
+bool Game::isPlanted(int location)
+{
+	for (auto i : field)
+	{
+		if (i == location) // da trong
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+}
+

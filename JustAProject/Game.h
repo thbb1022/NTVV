@@ -26,7 +26,6 @@ struct Action
 {
 	Type _type;
 	std::pair<bool,char> iskey_pressed;
-	glm::vec2 mouse_pos;
 };
 
 struct Menu

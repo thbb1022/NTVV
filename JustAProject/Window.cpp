@@ -175,8 +175,6 @@ void Window::Input()
 		actions.push_back(ac);
 	}
 
-
-
 	game->input(actions);
 	actions.clear();
 }

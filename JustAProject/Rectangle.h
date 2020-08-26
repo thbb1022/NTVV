@@ -32,8 +32,7 @@ private:
 	glm::vec2 scale;
 	float rotaion_angle;
 
-	//vertex array object
-	unsigned int VAO;
+	unsigned int VAO; //vertex array object
 	unsigned int VBO; // vertex buffer object
 	unsigned int CBO; // color buffer object
 	unsigned int UVBO; // uv buffer object

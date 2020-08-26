@@ -144,6 +144,7 @@ void Game::input(vector<Action> actions)
 
 void Game::Draw(ShaderProgram* shader)
 {
+
 	//bg
 	shader->Send_Mat4("model_matrx", background->transformation());
 	background->draw();
@@ -154,6 +155,10 @@ void Game::Draw(ShaderProgram* shader)
 		shader->Send_Mat4("model_matrx", dat[i]->transformation());
 		dat[i]->draw();
 	}
+
+	//nv
+	shader->Send_Mat4("model_matrx", main->transformation());
+	main->draw();
 
 	//sub menu
 	for (int i = 0; i < 4; i++)
@@ -176,9 +181,6 @@ void Game::Draw(ShaderProgram* shader)
 	shader->Send_Mat4("model_matrx", tree->transformation());
 	tree->draw();
 
-	//nv
-	shader->Send_Mat4("model_matrx", main->transformation());
-	main->draw();
 
 	//mui ten
 	if(target->getposition() != glm::vec2(0))

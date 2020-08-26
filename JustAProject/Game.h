@@ -12,7 +12,7 @@ enum Type
 	MOVE_DOWN,
 	MOVE_LEFT,
 	MOVE_RIGHT,
-	SHOOT
+	PLANT,
 };
 
 struct Action
@@ -48,7 +48,7 @@ private:
 	Sprite *tree;
 	Sprite* main;
 	vector<Sprite*> dat;
-	bool flag;
+	bool flag, plant;
 
 	Texture* bullet;
 	vector<Rectangle*> bullets;

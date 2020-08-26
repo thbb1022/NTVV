@@ -70,7 +70,7 @@ Game::~Game()
 int i = 1;
 void Game::input(vector<Action> actions)
 {
-
+	flag = false, plant = false;
 	for (auto action : actions)
 	{
 		switch (action._type)
@@ -90,6 +90,9 @@ void Game::input(vector<Action> actions)
 			case MOVE_RIGHT:
 				main->move_right(2);
 				break;
+			case PLANT:
+				plant = true;
+				break;
 			//case SHOOT:
 			//{
 			//	//generate rectangles as bullets
@@ -105,22 +108,26 @@ void Game::input(vector<Action> actions)
 				break;
 		}
 	}
-	//flag = false;
-	//for (int i = 0; i < 9; i++)
-	//{
-	//	if (/*flag == false &&*/ main->getposition().x - dat[i]->getposition().x <= 30
-	//		&& main->getposition().y - dat[i]->getposition().y <= 30)
-	//	{
-	//		//flag = true;
-	//		target = new Sprite("down.png", glm::vec2(dat[i]->getposition().x + 55, dat[i]->getposition().y + 50));
-	//		target->scale(glm::vec2(30));
-	//		return;
-	//	}
-	//	else
-	//	{
-	//		//delete target;
-	//	}
-	//}
+	
+	for (int i = 0; i < 81; i++)
+	{
+		int x = dat[i]->getposition().x, y = dat[i]->getposition().y;
+		if (/*flag == false &&*/ main->getposition().x - x <= 10
+			&& main->getposition().y - y <= 10)
+		{
+			//flag = true;
+			target = new Sprite("download.gif", glm::vec2(dat[i]->getposition().x + 25, dat[i]->getposition().y + 20));
+			target->scale(glm::vec2(30));
+			if (plant == true)
+			{
+				cout << "plant";
+				dat[i] = new Sprite("nho.png", glm::vec2(x, y));
+				dat[i]->scale(glm::vec2(70));
+				plant = false;
+			}
+			return;
+		}
+	}
 }
 
 void Game::Draw(ShaderProgram* shader)
@@ -155,11 +162,11 @@ void Game::Draw(ShaderProgram* shader)
 	main->draw();
 
 
-	//if(target->getposition() != glm::vec2(NULL,NULL))
-	//{
-	//	shader->Send_Mat4("model_matrx", target->transformation());
-	//	target->draw();
-	//}
+	if(target->getposition() != glm::vec2(NULL,NULL))
+	{
+		shader->Send_Mat4("model_matrx", target->transformation());
+		target->draw();
+	}
 
 
 	/*shader->Send_Mat4("model_matrx", enemy->transformation());

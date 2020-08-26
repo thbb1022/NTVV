@@ -133,6 +133,13 @@ void Window::Input()
 		actions.push_back(ac);
 	}
 
+	if (glfwGetKey(window_ptr, GLFW_KEY_SPACE))
+	{
+		Action ac;
+		ac._type = PLANT;
+		actions.push_back(ac);
+	}
+
 	//int newstate = glfwGetKey(window_ptr,GLFW_KEY_SPACE);
 	//if(newstate == GLFW_RELEASE && key_state == GLFW_PRESS)
 	//{

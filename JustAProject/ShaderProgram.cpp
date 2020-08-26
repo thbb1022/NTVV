@@ -1,63 +1,77 @@
 #include "ShaderProgram.h"
 
-ShaderProgram::ShaderProgram(const char * vertexShader, const char * pragmentShader)
+
+ShaderProgram::ShaderProgram(const char * vertex_shader, const char * fragment_shader)
 {
-	//complite shader
-	unsigned _vertexShader, _pragmentShader;
-	//vertex shader
-	_vertexShader = glCreateShader(GL_VERTEX_SHADER);
-	glShaderSource(_vertexShader, 1, &vertexShader, NULL);
-	glCompileShader(_vertexShader);
-	CheckError(_vertexShader, "SHADER");
-	//pragment shader
-	_pragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-	glShaderSource(_pragmentShader, 1, &pragmentShader, NULL);
-	glCompileShader(_pragmentShader);
-	CheckError(_pragmentShader, "PRAGMENT");
-	//shader program
+	// compile shader ..
+	unsigned int vertex, fragment;
+
+	// vertex shader
+	vertex  = glCreateShader(GL_VERTEX_SHADER);
+	glShaderSource(vertex,1, &vertex_shader,NULL);
+	glCompileShader(vertex);
+	checkerorr(vertex,"VERTEX");
+
+	// fragment shader
+	fragment  = glCreateShader(GL_FRAGMENT_SHADER);
+	glShaderSource(fragment,1, &fragment_shader,NULL);
+	glCompileShader(fragment);
+	checkerorr(vertex,"FRAGMENT");
+
+	// shader program
 	ID = glCreateProgram();
-	glAttachShader(ID, _vertexShader);
-	glAttachShader(ID, _pragmentShader);
+	glAttachShader(ID,vertex);
+	glAttachShader(ID,fragment);
 
 	glLinkProgram(ID);
-	CheckError(ID, "PROGRAM");
+	checkerorr(ID, "PROGRAM");
 
-	glDeleteShader(_vertexShader);
-	glDeleteShader(_pragmentShader);
+
+	glDeleteShader(vertex);
+	glDeleteShader(fragment);
 }
 
 ShaderProgram::~ShaderProgram()
 {
-	glDeleteProgram(ID); 
+	glDeleteShader(ID);
 }
 
-void ShaderProgram::Use()
+void ShaderProgram::use()
 {
 	glUseProgram(ID);
 }
 
-void ShaderProgram::CheckError(unsigned int shaderId, std::string type)
+void ShaderProgram::Send_Mat4(const char * name, glm::mat4& mat)
+{
+	auto location = glGetUniformLocation(ID,name);
+	glUniformMatrix4fv(location,1,GL_FALSE,&mat[0][0]);
+}
+
+void ShaderProgram::checkerorr(unsigned int shader_id, std::string type)
 {
 	int success;
-	char infoLog[1024];
-	if (type != "PROGRAM")
+	char infolog[1024];
+
+	if(type != "PROGRAM")
 	{
-		glGetShaderiv(shaderId, GL_COMPILE_STATUS, &success);
-		if (!success)
+		glGetShaderiv(shader_id,GL_COMPILE_STATUS,&success);
+		if(!success)
 		{
-			glGetShaderInfoLog(shaderId, 1024, NULL, infoLog);
-			std::cout << "ERROR::SHADERPROGRAM.CPP:COULD_NOT_COMPILE_"<<type<<"_SHADER\n";
-			std::cout << infoLog << "\n";
+			glGetShaderInfoLog(shader_id,1024,NULL,infolog);
+			cout<< "ERORR type : " << type <<endl;
+			cout<< "ERORR : " << infolog <<endl;
+			cout<< "==================================" << endl;
 		}
 	}
 	else
 	{
-		glGetShaderiv(shaderId, GL_LINK_STATUS, &success);
-		if (!success)
+		glGetProgramiv(shader_id,GL_LINK_STATUS,&success);
+		if(!success)
 		{
-			glGetProgramInfoLog(shaderId, 1024, NULL, infoLog);
-			std::cout << "ERROR::SHADERPROGRAM.CPP:COULD_NOT_LINK_" << type << "_SHADER\n";
-			std::cout << infoLog << "\n";
+			glGetProgramInfoLog(shader_id,1024,NULL,infolog);
+			cout<< "ERORR type : " << type <<endl;
+			cout<< "ERORR : " << infolog <<endl;
+			cout<< "==================================" << endl;
 		}
 	}
-}	
+}

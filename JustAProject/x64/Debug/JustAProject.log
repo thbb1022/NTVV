@@ -1,0 +1,46 @@
+﻿Rectangle.obj : error LNK2001: unresolved external symbol __imp___glewBindBuffer
+Rectangle.obj : error LNK2001: unresolved external symbol __imp___glewBufferData
+Rectangle.obj : error LNK2001: unresolved external symbol __imp___glewDeleteBuffers
+Rectangle.obj : error LNK2001: unresolved external symbol __imp___glewGenBuffers
+Rectangle.obj : error LNK2001: unresolved external symbol __imp___glewEnableVertexAttribArray
+Rectangle.obj : error LNK2001: unresolved external symbol __imp___glewVertexAttribPointer
+Rectangle.obj : error LNK2001: unresolved external symbol __imp___glewBindVertexArray
+Rectangle.obj : error LNK2001: unresolved external symbol __imp___glewDeleteVertexArrays
+Rectangle.obj : error LNK2001: unresolved external symbol __imp___glewGenVertexArrays
+ShaderProgram.obj : error LNK2001: unresolved external symbol __imp___glewAttachShader
+ShaderProgram.obj : error LNK2001: unresolved external symbol __imp___glewCompileShader
+ShaderProgram.obj : error LNK2001: unresolved external symbol __imp___glewCreateProgram
+ShaderProgram.obj : error LNK2001: unresolved external symbol __imp___glewCreateShader
+ShaderProgram.obj : error LNK2001: unresolved external symbol __imp___glewDeleteShader
+ShaderProgram.obj : error LNK2001: unresolved external symbol __imp___glewGetProgramInfoLog
+ShaderProgram.obj : error LNK2001: unresolved external symbol __imp___glewGetProgramiv
+ShaderProgram.obj : error LNK2001: unresolved external symbol __imp___glewGetShaderInfoLog
+ShaderProgram.obj : error LNK2001: unresolved external symbol __imp___glewGetShaderiv
+ShaderProgram.obj : error LNK2001: unresolved external symbol __imp___glewGetUniformLocation
+ShaderProgram.obj : error LNK2001: unresolved external symbol __imp___glewLinkProgram
+ShaderProgram.obj : error LNK2001: unresolved external symbol __imp___glewShaderSource
+ShaderProgram.obj : error LNK2001: unresolved external symbol __imp___glewUniformMatrix4fv
+ShaderProgram.obj : error LNK2001: unresolved external symbol __imp___glewUseProgram
+Texture.obj : error LNK2019: unresolved external symbol stbi_load referenced in function "public: __cdecl Texture::Texture(char const *)" (??0Texture@@QEAA@PEBD@Z)
+Texture.obj : error LNK2019: unresolved external symbol stbi_image_free referenced in function "public: __cdecl Texture::Texture(char const *)" (??0Texture@@QEAA@PEBD@Z)
+Texture.obj : error LNK2001: unresolved external symbol __imp___glewGenerateMipmap
+Window.obj : error LNK2019: unresolved external symbol __imp_glewInit referenced in function "public: __cdecl Window::Window(int,int)" (??0Window@@QEAA@HH@Z)
+Window.obj : error LNK2019: unresolved external symbol glfwInit referenced in function "public: __cdecl Window::Window(int,int)" (??0Window@@QEAA@HH@Z)
+Window.obj : error LNK2019: unresolved external symbol glfwTerminate referenced in function "public: __cdecl Window::~Window(void)" (??1Window@@QEAA@XZ)
+Window.obj : error LNK2019: unresolved external symbol glfwWindowHint referenced in function "public: __cdecl Window::Window(int,int)" (??0Window@@QEAA@HH@Z)
+Window.obj : error LNK2019: unresolved external symbol glfwCreateWindow referenced in function "public: __cdecl Window::Window(int,int)" (??0Window@@QEAA@HH@Z)
+Window.obj : error LNK2019: unresolved external symbol glfwWindowShouldClose referenced in function "public: void __cdecl Window::Mainloop(void)" (?Mainloop@Window@@QEAAXXZ)
+Window.obj : error LNK2019: unresolved external symbol glfwSetWindowShouldClose referenced in function "public: void __cdecl Window::Input(void)" (?Input@Window@@QEAAXXZ)
+Window.obj : error LNK2019: unresolved external symbol glfwSetWindowIcon referenced in function "public: __cdecl Window::Window(int,int)" (??0Window@@QEAA@HH@Z)
+Window.obj : error LNK2019: unresolved external symbol glfwGetWindowSize referenced in function "public: void __cdecl Window::Resize(void)" (?Resize@Window@@QEAAXXZ)
+Window.obj : error LNK2019: unresolved external symbol glfwPollEvents referenced in function "public: void __cdecl Window::Mainloop(void)" (?Mainloop@Window@@QEAAXXZ)
+Window.obj : error LNK2019: unresolved external symbol glfwGetKey referenced in function "public: void __cdecl Window::Input(void)" (?Input@Window@@QEAAXXZ)
+Window.obj : error LNK2019: unresolved external symbol glfwGetMouseButton referenced in function "public: void __cdecl Window::Input(void)" (?Input@Window@@QEAAXXZ)
+Window.obj : error LNK2019: unresolved external symbol glfwGetCursorPos referenced in function "public: void __cdecl Window::Input(void)" (?Input@Window@@QEAAXXZ)
+Window.obj : error LNK2019: unresolved external symbol glfwMakeContextCurrent referenced in function "public: __cdecl Window::Window(int,int)" (??0Window@@QEAA@HH@Z)
+Window.obj : error LNK2019: unresolved external symbol glfwSwapBuffers referenced in function "public: void __cdecl Window::Mainloop(void)" (?Mainloop@Window@@QEAAXXZ)
+glut32.lib : warning LNK4272: library machine type 'X86' conflicts with target machine type 'x64'
+glew32.lib : warning LNK4272: library machine type 'X86' conflicts with target machine type 'x64'
+glfw3.lib : warning LNK4272: library machine type 'X86' conflicts with target machine type 'x64'
+GLAUX.LIB : warning LNK4272: library machine type 'X86' conflicts with target machine type 'x64'
+E:\Work space\VSStudio work space\JustAProject - Copy\x64\Debug\JustAProject.exe : fatal error LNK1120: 41 unresolved externals

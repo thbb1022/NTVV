@@ -1,15 +1,18 @@
 #pragma once
-
-#include "Libs.h"
+#include "lib.h"
 
 class ShaderProgram
 {
 public:
-	ShaderProgram(const char* vertexShader, const char* pragmentShader);
+	ShaderProgram(const char* vertex_shader, const char* fragment_shader);
+
 	~ShaderProgram();
-	void Use();
+
+	void use();
+
+	void Send_Mat4(const char* name, glm::mat4& mat);
 
 private:
+	void checkerorr(unsigned int shader_id, std::string type);
 	unsigned int ID;
-	void CheckError(unsigned int shaderId, std::string type);
 };

@@ -105,28 +105,28 @@ void Window::Input()
 		glfwSetWindowShouldClose(window_ptr,true);
 	}
 
-	if(glfwGetKey(window_ptr,GLFW_KEY_UP))
+	if(glfwGetKey(window_ptr,GLFW_KEY_UP) || glfwGetKey(window_ptr, GLFW_KEY_W))
 	{
 		Action ac;
 		ac._type = MOVE_UP;
 		actions.push_back(ac);
 	}
 	
-	if(glfwGetKey(window_ptr,GLFW_KEY_DOWN))
+	if(glfwGetKey(window_ptr,GLFW_KEY_DOWN) || glfwGetKey(window_ptr, GLFW_KEY_S))
 	{
 		Action ac;
 		ac._type = MOVE_DOWN;
 		actions.push_back(ac);
 	}
 
-	if(glfwGetKey(window_ptr,GLFW_KEY_LEFT))
+	if(glfwGetKey(window_ptr,GLFW_KEY_LEFT) || glfwGetKey(window_ptr, GLFW_KEY_A))
 	{
 		Action ac;
 		ac._type = MOVE_LEFT;
 		actions.push_back(ac);
 	}
 
-	if(glfwGetKey(window_ptr,GLFW_KEY_RIGHT))
+	if(glfwGetKey(window_ptr,GLFW_KEY_RIGHT) || glfwGetKey(window_ptr, GLFW_KEY_D))
 	{
 		Action ac;
 		ac._type = MOVE_RIGHT;
@@ -141,7 +141,6 @@ void Window::Input()
 
 		if (xpos <= 150 && xpos >= 50)
 		{
-			cout << "X";
 			if (ypos <= 400 && ypos >= 300)
 				ac._type = SELECTMENU1;
 			else if (ypos <= 550 && ypos >= 450)
@@ -155,7 +154,6 @@ void Window::Input()
 		//600->700 300->400
 		if(ypos <= 400 && ypos >= 300)
 		{
-			cout << "y";
 			if (xpos <= 250 && xpos >= 150)
 				ac._type = SELECTSPMENU1;
 			else if (xpos <= 400 && xpos >= 300)
@@ -163,7 +161,35 @@ void Window::Input()
 			else if (xpos <= 550 && xpos >= 450)
 				ac._type = SELECTSPMENU3;
 			else if (xpos <= 700 && xpos >= 600)
+				ac._type = SELECTSPMENU4;
+			else if (xpos <= 850 && xpos >= 750)
+				ac._type = SELECTSPMENU5;
+		}
+		else if (ypos <= 550 && ypos >= 450)
+		{
+			if (xpos <= 250 && xpos >= 150)
+				ac._type = SELECTSPMENU6;
+			else if (xpos <= 400 && xpos >= 300)
+				ac._type = SELECTSPMENU7;
+			else if (xpos <= 550 && xpos >= 450)
+				ac._type = SELECTSPMENU8;
+			else if (xpos <= 700 && xpos >= 600)
+				ac._type = SELECTSPMENU9;
+			else if (xpos <= 850 && xpos >= 750)
+				ac._type = SELECTSPMENU10;
+		}
+		else if (ypos <= 750 && ypos >= 600)
+		{
+			if (xpos <= 250 && xpos >= 150)
+				ac._type = SELECTSPMENU11;
+			else if (xpos <= 400 && xpos >= 300)
 				ac._type = QUITSPMENU;
+			//else if (xpos <= 550 && xpos >= 450)
+			//	ac._type = SELECTSPMENU3;
+			//else if (xpos <= 700 && xpos >= 600)
+			//	ac._type = SELECTSPMENU4;
+			//else if (xpos <= 700 && xpos >= 600)
+			//	ac._type = SELECTSPMENU5;
 		}
 		actions.push_back(ac);
 	}

@@ -4,6 +4,7 @@
 #include <vector>
 #include <fstream>
 #include <string>
+#include <ctime>
 
 #include "glew.h"
 #include "glut.h"

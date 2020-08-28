@@ -3,6 +3,8 @@
 #include "Sprite.h"
 #include "ShaderProgram.h"
 #include "Rectangle.h"
+#include "FieldFrag.h"
+#include "Plants.h"
 using namespace std;
 
 
@@ -16,9 +18,18 @@ enum Type
 	SELECTMENU1,
 	SELECTMENU2,
 	SELECTMENU3,
+
 	SELECTSPMENU1,
 	SELECTSPMENU2,
 	SELECTSPMENU3,
+	SELECTSPMENU4,
+	SELECTSPMENU5,
+	SELECTSPMENU6,
+	SELECTSPMENU7,
+	SELECTSPMENU8,
+	SELECTSPMENU9,
+	SELECTSPMENU10,
+	SELECTSPMENU11,
 	QUITSPMENU,
 };
 
@@ -48,20 +59,17 @@ public:
 
 private:
 	Sprite* background;
+	Sprite* main;
+	Sprite* selected;
+	vector<FieldFrag*> field;
+	vector<Plants*> plantList;
 	Sprite * target;
 	int treeSelected;
 	Sprite *tree;
-	Sprite* main;
-	vector<Sprite*> dat;
-	bool flag, plant, clickSubMenu;
-
-	vector<int> field;
+	bool clickSubMenu;
 	vector<Menu> menuList;
 	vector<Menu> subMenuList;
-	vector<Rectangle*> bullets;
-	vector<Sprite*> platList;
-	bool isPlanted(int location);
+	void CreatePlantList();
 	void LoadSubMenu();
 	void DesSubMenu();
-	bool destroyPlant;
 };

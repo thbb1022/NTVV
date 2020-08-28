@@ -5,6 +5,7 @@
 #include "Rectangle.h"
 #include "FieldFrag.h"
 #include "Plants.h"
+
 using namespace std;
 
 
@@ -65,7 +66,6 @@ private:
 	vector<Plants*> plantList;
 	Sprite * target;
 	int treeSelected;
-	Sprite *tree;
 	bool clickSubMenu;
 	vector<Menu> menuList;
 	vector<Menu> subMenuList;

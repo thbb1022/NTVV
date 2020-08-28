@@ -23,10 +23,6 @@ Window::Window(int width, int height)
 
 	glfwMakeContextCurrent(window_ptr);
 
-
-	//const GLFWvidmode * mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
-	//glfwSetWindowMonitor( window_ptr, glfwGetPrimaryMonitor(), 0, 0, mode->width, mode->height, 0 );
-
 	if(glewInit())
 	{
 		cout<<"erorr initilize glew"<<endl;

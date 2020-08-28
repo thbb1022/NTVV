@@ -179,6 +179,9 @@ void Game::input(vector<Action> actions)
 		case QUITSPMENU:
 			if (clickSubMenu == true)
 			{
+				select = menuList[0].icon->getposition();
+				selected = new Sprite("Images\\menu\\selected.png", select);
+				selected->scale(glm::vec2(110));
 				treeSelected = 0;
 				DesSubMenu();
 			}
@@ -198,6 +201,36 @@ void Game::input(vector<Action> actions)
 		selected->scale(glm::vec2(110));
 		slFlag = false;
 	}
+
+	for (auto i : field)
+	{
+		//x,y
+		int x = i->image->getposition().x;
+		int y = i->image->getposition().y;
+		//
+
+		if (i->getStatus() != BLANK)
+		{
+			int duration = (std::clock() - i->start) / (int)CLOCKS_PER_SEC;
+			cout << duration << endl;
+			if (duration >= (i->life / 2) && duration < (i->life) && i->getStatus() != MIDDLE && i->getStatus() != RIPEN)
+			{
+				i->setStatus(MIDDLE);
+				cout << i->getStatus();
+				i->image = new Sprite(plantList[i->plantID - 1]->getImage(i->getStatus()), glm::vec2(x, y));
+				i->image->scale(glm::vec2(70));
+				return;
+			}
+			else if (duration >= (i->life) && i->getStatus() != RIPEN)
+			{
+				i->setStatus(RIPEN);
+				i->image = new Sprite(plantList[i->plantID - 1]->getImage(i->getStatus()), glm::vec2(x, y));
+				i->image->scale(glm::vec2(70));
+				return;
+			}
+		}
+	}
+
 	for (auto i : field)
 	{
 		//x,y
@@ -233,27 +266,6 @@ void Game::input(vector<Action> actions)
 		else
 		{
 			target = nullptr;
-		}
-
-		if (i->getStatus() != BLANK)
-		{
-			double duration = (std::clock() - i->start) / (double)CLOCKS_PER_SEC;
-			cout << duration << endl;
-			if (duration >= (i->life / 2) && duration < (i->life) && i->getStatus() != MIDDLE && i->getStatus() != RIPEN)
-			{
-				i->setStatus(MIDDLE);
-				cout << i->getStatus();
-				i->image = new Sprite(plantList[i->plantID - 1]->getImage(i->getStatus()), glm::vec2(x, y));
-				i->image->scale(glm::vec2(70));
-				return;
-			}
-			else if (duration >= (i->life) && i->getStatus() != RIPEN)
-			{
-				i->setStatus(RIPEN);
-				i->image = new Sprite(plantList[i->plantID - 1]->getImage(i->getStatus()), glm::vec2(x, y));
-				i->image->scale(glm::vec2(70));
-				return;
-			}
 		}
 	}
 }
@@ -325,12 +337,12 @@ void Game::CreatePlantList()
 		"Images\\plant\\3.png",
 		"Images\\plant\\3-uong.png",
 		"Images\\plant\\3-chin.png"));
-	plantList.push_back(new Plants(4, 100, 100, 100,
+	plantList.push_back(new Plants(4, 10, 100, 100,
 		"Images\\menu\\4.png",
 		"Images\\plant\\4.png",
 		"Images\\plant\\4-uong.png",
 		"Images\\plant\\4-chin.png"));
-	plantList.push_back(new Plants(5, 100, 100, 100,
+	plantList.push_back(new Plants(5, 10, 100, 100,
 		"Images\\menu\\5.png",
 		"Images\\plant\\5.png",
 		"Images\\plant\\5-uong.png",

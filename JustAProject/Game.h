@@ -66,6 +66,7 @@ private:
 	vector<FieldFrag*> field;
 	vector<Plants*> plantList;
 	Sprite * target;
+	Sprite* wareHouse;
 	int treeSelected;
 	std::clock_t start;
 	bool clickSubMenu;
@@ -75,4 +76,5 @@ private:
 	void LoadSubMenu();
 	void DesSubMenu();
 	int getTarget();
+	bool through(int x, int y, int a, int b);
 };

@@ -1,8 +1,15 @@
-﻿  main.cpp
-  Window.cpp
+﻿  Window.cpp
+  Texture.cpp
+  Sprite.cpp
+  ShaderProgram.cpp
+  Rectangle.cpp
+  Plants.cpp
+  main.cpp
   Game.cpp
+  FieldFrag.cpp
+  Camera.cpp
   Generating Code...
-  LINK : E:\Work space\VSStudio work space\NTVV\Debug\JustAProject.exe not found or not built by the last incremental link; performing full link
+e:\ntvv\justaproject\plants.cpp(52): warning C4715: 'Plants::getImage': not all control paths return a value
 LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library
-  JustAProject.vcxproj -> E:\Work space\VSStudio work space\NTVV\Debug\JustAProject.exe
-  JustAProject.vcxproj -> E:\Work space\VSStudio work space\NTVV\Debug\JustAProject.pdb (Partial PDB)
+  JustAProject.vcxproj -> E:\NTVV\Debug\JustAProject.exe
+  JustAProject.vcxproj -> E:\NTVV\Debug\JustAProject.pdb (Partial PDB)

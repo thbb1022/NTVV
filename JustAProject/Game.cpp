@@ -41,6 +41,8 @@ Game::Game()
 		menuList[i].icon->scale(glm::vec2(100));
 		menuy += 150;
 	}
+	wareHouse = new Sprite("Images\\nhakho.png", glm::vec2(850, 400));
+	wareHouse->scale(glm::vec2(200));
 }
 
 Game::~Game()
@@ -67,16 +69,49 @@ void Game::input(vector<Action> actions)
 		switch (action._type)
 		{
 		case MOVE_UP:
-			main->move_up(2);
+			if (main->getposition().x >= wareHouse->getposition().x - 50 && main->getposition().x <= wareHouse->getposition().x + 150)
+			{
+				if (through(main->getposition().x, main->getposition().y, wareHouse->getposition().x + 100, wareHouse->getposition().y + 150))
+					main->move_up(0);
+				else
+					main->move_up(2);
+			}
+			else if (main->getposition().y <470)
+				main->move_up(0);
+			else
+				main->move_up(2);
 			break;
 		case MOVE_DOWN:
-			main->move_down(2);
+			if (main->getposition().y >= 920)
+				main->move_down(0);
+			else
+				main->move_down(2);
 			break;
 		case MOVE_LEFT:
-			main->move_left(2);
+			if (main->getposition().x >= wareHouse->getposition().x - 30 && main->getposition().x <= wareHouse->getposition().x + 180)
+			{
+				if (through(main->getposition().x, main->getposition().y, wareHouse->getposition().x + 150, wareHouse->getposition().y + 100))
+					main->move_left(0);
+				else
+					main->move_left(2);
+			}
+			else if (main->getposition().x <= 0)
+				main->move_left(0);
+			else
+				main->move_left(2);
 			break;
 		case MOVE_RIGHT:
-			main->move_right(2);
+			if (main->getposition().x + 80 >= wareHouse->getposition().x && main->getposition().x <= wareHouse->getposition().x + 150)
+			{
+				if (through(main->getposition().x, main->getposition().y, wareHouse->getposition().x, wareHouse->getposition().y + 100))
+					main->move_right(0);
+				else
+					main->move_right(2);
+			}
+			else if (main->getposition().x >= 1850)
+				main->move_left(0);
+			else
+				main->move_right(2);
 			break;
 		case SELECTMENU1:
 			LoadSubMenu();
@@ -312,6 +347,9 @@ void Game::Draw(ShaderProgram* shader)
 		shader->Send_Mat4("model_matrx", selected->transformation());
 		selected->draw();
 	}
+	//nhakho
+	shader->Send_Mat4("model_matrx", wareHouse->transformation());
+	wareHouse->draw();
 }
 
 void Game::CreatePlantList()
@@ -323,52 +361,52 @@ void Game::CreatePlantList()
 		"Images\\plant\\1-chin.png"));
 	plantList.push_back(new Plants(2, 10, 100, 100,
 		"Images\\menu\\2.png",
-		"Images\\plant\\2.png",
+		"Images\\plant\\gieohat.png",
 		"Images\\plant\\2-uong.png",
 		"Images\\plant\\2-chin.png"));
 	plantList.push_back(new Plants(3, 10, 100, 100,
 		"Images\\menu\\3.png",
-		"Images\\plant\\3.png",
+		"Images\\plant\\gieohat.png",
 		"Images\\plant\\3-uong.png",
 		"Images\\plant\\3-chin.png"));
 	plantList.push_back(new Plants(4, 10, 100, 100,
 		"Images\\menu\\4.png",
-		"Images\\plant\\4.png",
+		"Images\\plant\\gieohat.png",
 		"Images\\plant\\4-uong.png",
 		"Images\\plant\\4-chin.png"));
 	plantList.push_back(new Plants(5, 10, 100, 100,
 		"Images\\menu\\5.png",
-		"Images\\plant\\5.png",
+		"Images\\plant\\gieohat.png",
 		"Images\\plant\\5-uong.png",
 		"Images\\plant\\5-chin.png"));
 	plantList.push_back(new Plants(6, 100, 100, 100,
 		"Images\\menu\\6.png",
-		"Images\\plant\\6.png",
+		"Images\\plant\\gieohat.png",
 		"Images\\plant\\6-uong.png",
 		"Images\\plant\\6-chin.png"));
 	plantList.push_back(new Plants(7, 100, 100, 100,
 		"Images\\menu\\7.png",
-		"Images\\plant\\7.png",
+		"Images\\plant\\gieohat.png",
 		"Images\\plant\\7-uong.png",
 		"Images\\plant\\7-chin.png"));
 	plantList.push_back(new Plants(8, 100, 100, 100,
 		"Images\\menu\\8.png",
-		"Images\\plant\\8.png",
+		"Images\\plant\\gieohat.png",
 		"Images\\plant\\8-uong.png",
 		"Images\\plant\\8-chin.png"));
 	plantList.push_back(new Plants(9, 100, 100, 100,
 		"Images\\menu\\9.png",
-		"Images\\plant\\9.png",
+		"Images\\plant\\gieohat.png",
 		"Images\\plant\\9-uong.png",
 		"Images\\plant\\9-chin.png"));
 	plantList.push_back(new Plants(10, 100, 100, 100,
 		"Images\\menu\\10.png",
-		"Images\\plant\\10.png",
+		"Images\\plant\\gieohat.png",
 		"Images\\plant\\10-uong.png",
 		"Images\\plant\\10-chin.png"));
 	plantList.push_back(new Plants(11, 100, 100, 100,
 		"Images\\menu\\11.png",
-		"Images\\plant\\11.png",
+		"Images\\plant\\gieohat.png",
 		"Images\\plant\\11-uong.png",
 		"Images\\plant\\11-chin.png"));
 }
@@ -432,6 +470,14 @@ int Game::getTarget()
 		}
 	}
 	return -1;
+}
+bool Game::through(int x, int y, int a, int b)
+{
+	if (x - a <= 50 && y - b <= 50)
+	{
+		return true;
+	}
+	return false;
 }
 
 

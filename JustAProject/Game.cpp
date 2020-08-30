@@ -119,8 +119,6 @@ void Game::input(vector<Action> actions)
 				else
 					main->move_right(2);
 			}
-			
-				
 			else
 				main->move_right(2);
 			break;

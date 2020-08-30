@@ -47,6 +47,7 @@ struct Menu
 	Menu(string _ID, Sprite* _icon):ID(_ID),icon(_icon) {}
 };
 
+
 class Game
 {
 public:
@@ -62,6 +63,7 @@ private:
 	Sprite* background;
 	Sprite* main;
 	Sprite* selected;
+	Sprite*wareHouse;
 	vector<FieldFrag*> field;
 	vector<Plants*> plantList;
 	Sprite * target;
@@ -72,4 +74,5 @@ private:
 	void CreatePlantList();
 	void LoadSubMenu();
 	void DesSubMenu();
+	bool canMove(int a, int b, int x, int y);
 };

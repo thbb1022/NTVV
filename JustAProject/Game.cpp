@@ -3,12 +3,15 @@
 Game::Game()
 {
 	CreatePlantList();
-
+	
 	background = new Sprite("Images\\bg.png",glm::vec2(0));
 	background->scale(glm::vec2(2000,2000));
 
 	main = new Sprite("Images\\main.png", glm::vec2(700, 500));
 	main->scale(glm::vec2(100));
+
+	wareHouse = new Sprite("Images\\nhakho.png", glm::vec2(800, 450));
+	wareHouse->scale(glm::vec2(100));
 
 	float x = 1400, y = 500, tmp = 1;
 	for (int i = 0; i < 81; i++)
@@ -40,6 +43,9 @@ Game::Game()
 		menuList[i].icon->scale(glm::vec2(100));
 		menuy += 150;
 	}
+
+
+	
 }
 
 Game::~Game()
@@ -66,16 +72,55 @@ void Game::input(vector<Action> actions)
 		switch (action._type)
 		{
 		case MOVE_UP:
-			main->move_up(2);
+			if( main->getposition().x > wareHouse->getposition().x-50 &&  main->getposition().x < wareHouse->getposition().x+80)
+			{ 
+				if (canMove(main->getposition().x, main->getposition().y, wareHouse->getposition().x+20, wareHouse->getposition().y+30) == true)
+				{
+					main->move_up(0);
+				}
+				else
+					main->move_up(2);
+			}
+			else if (main->getposition().y == 450)
+				main->move_up(0);
+			else
+				main->move_up(2);
 			break;
 		case MOVE_DOWN:
-			main->move_down(2);
+			if (main->getposition().y == 910)
+				main->move_right(0);
+			else
+				main->move_down(2);
 			break;
 		case MOVE_LEFT:
-			main->move_left(2);
+			if (main->getposition().x > wareHouse->getposition().x  && main->getposition().y < wareHouse->getposition().y+40)
+			{
+				if (canMove(main->getposition().x, main->getposition().y, wareHouse->getposition().x+30, wareHouse->getposition().y+20) == true)
+				{
+					main->move_left(0);
+				}
+				else
+					main->move_left(2);
+			}
+			else if (main->getposition().x<0)
+				main->move_left(0);
+			else
+				main->move_left(2);
 			break;
 		case MOVE_RIGHT:
-			main->move_right(2);
+			if (main->getposition().x > 1850)
+				main->move_right(0);
+			else if(main->getposition().x+80 > wareHouse->getposition().x && main->getposition().y+80>wareHouse->getposition().y)
+			{
+				if (canMove(main->getposition().x, main->getposition().y, wareHouse->getposition().x, wareHouse->getposition().y+20 ) == true)
+				{
+					main->move_right(0);
+				}
+				else
+					main->move_right(2);
+			}
+			else
+				main->move_right(2);
 			break;
 		case SELECTMENU1:
 			LoadSubMenu();
@@ -306,6 +351,10 @@ void Game::Draw(ShaderProgram* shader)
 	shader->Send_Mat4("model_matrx", main->transformation());
 	main->draw();
 
+	//nhakho
+	shader->Send_Mat4("model_matrx", wareHouse->transformation());
+	wareHouse->draw();
+
 	//mui ten
 	if(target != nullptr)
 	{
@@ -329,52 +378,52 @@ void Game::CreatePlantList()
 		"Images\\plant\\1-chin.png"));
 	plantList.push_back(new Plants(2, 10, 100, 100,
 		"Images\\menu\\2.png",
-		"Images\\plant\\2.png",
+		"Images\\plant\\gieohat.png",
 		"Images\\plant\\2-uong.png",
 		"Images\\plant\\2-chin.png"));
 	plantList.push_back(new Plants(3, 10, 100, 100,
 		"Images\\menu\\3.png",
-		"Images\\plant\\3.png",
+		"Images\\plant\\gieohat.png",
 		"Images\\plant\\3-uong.png",
 		"Images\\plant\\3-chin.png"));
 	plantList.push_back(new Plants(4, 10, 100, 100,
 		"Images\\menu\\4.png",
-		"Images\\plant\\4.png",
+		"Images\\plant\\gieohat.png",
 		"Images\\plant\\4-uong.png",
 		"Images\\plant\\4-chin.png"));
 	plantList.push_back(new Plants(5, 10, 100, 100,
 		"Images\\menu\\5.png",
-		"Images\\plant\\5.png",
+		"Images\\plant\\gieohat.png",
 		"Images\\plant\\5-uong.png",
 		"Images\\plant\\5-chin.png"));
 	plantList.push_back(new Plants(6, 100, 100, 100,
 		"Images\\menu\\6.png",
-		"Images\\plant\\6.png",
+		"Images\\plant\\gieohat.png",
 		"Images\\plant\\6-uong.png",
 		"Images\\plant\\6-chin.png"));
 	plantList.push_back(new Plants(7, 100, 100, 100,
 		"Images\\menu\\7.png",
-		"Images\\plant\\7.png",
+		"Images\\plant\\gieohat.png",
 		"Images\\plant\\7-uong.png",
 		"Images\\plant\\7-chin.png"));
 	plantList.push_back(new Plants(8, 100, 100, 100,
 		"Images\\menu\\8.png",
-		"Images\\plant\\8.png",
+		"Images\\plant\\gieohat.png",
 		"Images\\plant\\8-uong.png",
 		"Images\\plant\\8-chin.png"));
 	plantList.push_back(new Plants(9, 100, 100, 100,
 		"Images\\menu\\9.png",
-		"Images\\plant\\9.png",
+		"Images\\plant\\gieohat.png",
 		"Images\\plant\\9-uong.png",
 		"Images\\plant\\9-chin.png"));
 	plantList.push_back(new Plants(10, 100, 100, 100,
 		"Images\\menu\\10.png",
-		"Images\\plant\\10.png",
+		"Images\\plant\\gieohat.png",
 		"Images\\plant\\10-uong.png",
 		"Images\\plant\\10-chin.png"));
 	plantList.push_back(new Plants(11, 100, 100, 100,
 		"Images\\menu\\11.png",
-		"Images\\plant\\11.png",
+		"Images\\plant\\gieohat.png",
 		"Images\\plant\\11-uong.png",
 		"Images\\plant\\11-chin.png"));
 }
@@ -411,5 +460,13 @@ void Game::DesSubMenu()
 {
 	subMenuList.clear();
 }
-
+bool Game::canMove(int a, int b, int x, int y)
+{
+	if (a-x<=50 && b-y<=50)
+	{
+		return true;
+	}
+	else 
+		return false;
+}
 

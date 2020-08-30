@@ -3,31 +3,30 @@
 Game::Game()
 {
 	CreatePlantList();
-	start = std::clock(); 
 
 	background = new Sprite("Images\\bg.png",glm::vec2(0));
 	background->scale(glm::vec2(2000,2000));
 
-	main = new Sprite("Images\\laibuon.png", glm::vec2(700, 500));
+	main = new Sprite("Images\\main.png", glm::vec2(700, 500));
 	main->scale(glm::vec2(100));
 
-	float x = 1300, y = 450, tmp = 1;
-	for (int i = 0; i < 25; i++)
+	float x = 1400, y = 500, tmp = 1;
+	for (int i = 0; i < 81; i++)
 	{
 		field.push_back(new FieldFrag());
 		field[i]->plantID = 0;
 		field[i]->setStatus(BLANK);
-		field[i]->image = new Sprite("Images\\plant\\012.png", glm::vec2(x, y));
+		field[i]->image = new Sprite("Images\\plant\\0.png", glm::vec2(x, y));
 		field[i]->image->scale(glm::vec2(70));
-		if (tmp < 5)
+		if (tmp < 9)
 		{
-			x += 70;
+			x += 45;
 			tmp++;
 		}
 		else
 		{
-			y += 70;
-			x = 1300;
+			y += 45;
+			x = 1400;
 			tmp = 1;
 		}
 	}
@@ -212,9 +211,9 @@ void Game::input(vector<Action> actions)
 
 		if (i->getStatus() != BLANK)
 		{
-			int duration = (std::clock() - start) / (int)CLOCKS_PER_SEC;
+			int duration = (std::clock() - i->start) / (int)CLOCKS_PER_SEC;
 			cout << duration << endl;
-			if (duration- (i->plantTime) == (i->life / 2) /*&& duration - (i->plantTime) < (i->life)*/ && i->getStatus() != MIDDLE && i->getStatus() != RIPEN)
+			if (duration >= (i->life / 2) && duration < (i->life) && i->getStatus() != MIDDLE && i->getStatus() != RIPEN)
 			{
 				i->setStatus(MIDDLE);
 				cout << i->getStatus();
@@ -222,7 +221,7 @@ void Game::input(vector<Action> actions)
 				i->image->scale(glm::vec2(70));
 				return;
 			}
-			else if (duration - (i->plantTime) == (i->life) && i->getStatus() != RIPEN)
+			else if (duration >= (i->life) && i->getStatus() != RIPEN)
 			{
 				i->setStatus(RIPEN);
 				i->image = new Sprite(plantList[i->plantID - 1]->getImage(i->getStatus()), glm::vec2(x, y));
@@ -232,29 +231,41 @@ void Game::input(vector<Action> actions)
 		}
 	}
 
-	if (getTarget() != -1)
+	for (auto i : field)
 	{
-		int targetx = field[getTarget()]->image->getposition().x;
-		int targety = field[getTarget()]->image->getposition().y;
-		target = new Sprite("Images\\target.png", glm::vec2(targetx + 22.5, targety + 22.5));
-		target->scale(glm::vec2(30));
-		if (plantFlag == true && field[getTarget()]->isPlanted() == false && treeSelected != 0)
+		//x,y
+		int x = i->image->getposition().x;
+		int y = i->image->getposition().y;
+		//
+		if (main->getposition().x - x <= 10
+			&& main->getposition().y - y <= 10 )
 		{
-			field[getTarget()]->setStatus(GROW);
-			field[getTarget()]->image = new Sprite(plantList[treeSelected - 1]->getImage(field[getTarget()]->getStatus()), glm::vec2(targetx, targety));
-			field[getTarget()]->image->scale(glm::vec2(70));
-			field[getTarget()]->life = plantList[treeSelected - 1]->getLifeTime();
-			field[getTarget()]->plantID = treeSelected;
-			field[getTarget()]->plantTime = (std::clock() - start) / (int)CLOCKS_PER_SEC;
-			plantFlag = false;
-			cout << plantList[treeSelected - 1]->getImage(field[getTarget()]->getStatus());
+			target = new Sprite("Images\\target.png", glm::vec2(x + 22.5, y + 22.5));
+			target->scale(glm::vec2(30));
+			if (plantFlag == true && i->isPlanted() == false && treeSelected !=0)
+			{
+				i->setStatus(GROW);
+				i->image =  new Sprite(plantList[treeSelected - 1]->getImage(i->getStatus()), glm::vec2(x, y));
+				i->image->scale(glm::vec2(70));
+				i->life = plantList[treeSelected - 1]->getLifeTime();
+				i->plantID = treeSelected;
+				i->start = std::clock(); // counter grown time
+				plantFlag = false;
+				cout << plantList[treeSelected - 1]->getImage(i->getStatus());
+				return;
+			}
+			else if (destroyPlantFlag == true)
+			{
+				i->setStatus(BLANK);
+				i->image = new Sprite("Images\\plant\\0.png", glm::vec2(x, y));
+				i->image->scale(glm::vec2(70));
+				destroyPlantFlag = false;
+			}
+			return;
 		}
-		else if (destroyPlantFlag == true)
+		else
 		{
-			field[getTarget()]->setStatus(BLANK);
-			field[getTarget()]->image = new Sprite("Images\\plant\\0.png", glm::vec2(targetx, targety));
-			field[getTarget()]->image->scale(glm::vec2(70));
-			destroyPlantFlag = false;
+			target = nullptr;
 		}
 	}
 }
@@ -265,11 +276,6 @@ void Game::Draw(ShaderProgram* shader)
 	//bg
 	shader->Send_Mat4("model_matrx", background->transformation());
 	background->draw();
-
-	glPointSize(4);
-	glBegin(GL_POINT);
-	glVertex2f(main->getposition().x, main->getposition().y);
-	glEnd();
 
 	//field
 
@@ -301,7 +307,7 @@ void Game::Draw(ShaderProgram* shader)
 	main->draw();
 
 	//mui ten
-	if(getTarget() !=-1)
+	if(target != nullptr)
 	{
 		shader->Send_Mat4("model_matrx", target->transformation());
 		target->draw();
@@ -395,7 +401,7 @@ void Game::LoadSubMenu()
 		menuID++;
 	}
 
-	subMenuList.push_back(Menu("0", new Sprite("Images\\menu\\x.png", glm::vec2(menux, menuy))));
+	subMenuList.push_back(Menu("0", new Sprite("Images\\menu\\quit.png", glm::vec2(menux, menuy))));
 	subMenuList[menuID-1].icon->scale(glm::vec2(100));
 
 	clickSubMenu = true;
@@ -405,34 +411,5 @@ void Game::DesSubMenu()
 {
 	subMenuList.clear();
 }
-
-int Game::getTarget()
-{
-	float x = 1300, y = 450, tmp = 1;
-	for (int i = 0; i < 25; i++)
-	{
-		int mainx = main->getposition().x, mainy = main->getposition().y;
-		if (mainx + 22.5 >= x && mainx + 22.5 <= x + 70)
-		{
-			if (mainy + 45 >= y && mainy + 45 <= y + 70)
-			{
-				return i;
-			}
-		}
-		if (tmp < 5)
-		{
-			x += 70;
-			tmp++;
-		}
-		else
-		{
-			y += 70;
-			x = 1300;
-			tmp = 1;
-		}
-	}
-	return -1;
-}
-
 
 

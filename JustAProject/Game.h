@@ -66,12 +66,10 @@ private:
 	vector<Plants*> plantList;
 	Sprite * target;
 	int treeSelected;
-	std::clock_t start;
 	bool clickSubMenu;
 	vector<Menu> menuList;
 	vector<Menu> subMenuList;
 	void CreatePlantList();
 	void LoadSubMenu();
 	void DesSubMenu();
-	int getTarget();
 };

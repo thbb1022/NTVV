@@ -18,8 +18,8 @@ public:
 	PlantStatus getStatus();
 	int plantID;
 	Sprite* image;
-	int plantTime;
-	int life;
+	std::clock_t start;
+	float life;
 private:
 	PlantStatus stt;
 };

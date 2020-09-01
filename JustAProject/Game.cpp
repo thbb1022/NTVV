@@ -11,13 +11,13 @@ Game::Game()
 	main = new Sprite("Images\\laibuon.png", glm::vec2(700, 500));
 	main->scale(glm::vec2(100));
 
-	float x = 1300, y = 450, tmp = 1;
+	float x = 1300, y = 550, tmp = 1;
 	for (int i = 0; i < 25; i++)
 	{
 		field.push_back(new FieldFrag());
 		field[i]->plantID = 0;
 		field[i]->setStatus(BLANK);
-		field[i]->image = new Sprite("Images\\plant\\012.png", glm::vec2(x, y));
+		field[i]->image = new Sprite("Images\\plant\\0.png", glm::vec2(x, y));
 		field[i]->image->scale(glm::vec2(70));
 		if (tmp < 5)
 		{
@@ -43,6 +43,10 @@ Game::Game()
 	}
 	wareHouse = new Sprite("Images\\nhakho.png", glm::vec2(850, 400));
 	wareHouse->scale(glm::vec2(200));
+
+	inventory = new Sprite("kho.png", glm::vec2(850, 400));
+	wareHouse->scale(glm::vec2(300));
+	openEnventory = false;
 }
 
 Game::~Game()
@@ -51,6 +55,7 @@ Game::~Game()
 	delete background;
 	delete main;
 	delete selected;
+	delete inventory;
 	for (auto item : field)
 	{
 		delete item;
@@ -122,6 +127,7 @@ void Game::input(vector<Action> actions)
 			break;
 		case SELECTMENU2:
 			DesSubMenu();
+			openEnventory = true;
 			treeSelected = 0;
 			select = menuList[1].icon->getposition();
 			selected = new Sprite("Images\\menu\\selected.png", select);
@@ -350,6 +356,12 @@ void Game::Draw(ShaderProgram* shader)
 	//nhakho
 	shader->Send_Mat4("model_matrx", wareHouse->transformation());
 	wareHouse->draw();
+
+	if (openEnventory == true)
+	{
+		shader->Send_Mat4("model_matrx", inventory->transformation());
+		inventory->draw();
+	}
 }
 
 void Game::CreatePlantList()
@@ -444,9 +456,13 @@ void Game::DesSubMenu()
 	subMenuList.clear();
 }
 
+void Game::LoadInventory()
+{
+}
+
 int Game::getTarget()
 {
-	float x = 1300, y = 450, tmp = 1;
+	float x = 1300, y = 550, tmp = 1;
 	for (int i = 0; i < 25; i++)
 	{
 		int mainx = main->getposition().x, mainy = main->getposition().y;

@@ -1,12 +1,13 @@
 #include "Window.h"
 
 
-int Window::key_state = GLFW_RELEASE;
+int Window::keyState = GLFW_RELEASE;
 
 Window::Window(int width, int height)
-	:m_width(width),
-	m_height(height)
 {
+	_width = width;
+	_height = height;
+
 	glfwInit();
 
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
@@ -14,35 +15,34 @@ Window::Window(int width, int height)
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	glfwWindowHint(GLFW_MAXIMIZED,true);
 
-	window_ptr = glfwCreateWindow(width, height, "NTVV",NULL,NULL);
-	if(window_ptr ==  nullptr)
+	windowPtr = glfwCreateWindow(width, height, "NTVV",NULL,NULL);
+	if(windowPtr ==  nullptr)
 	{
-		cout<<"erorr initilize glfw"<<endl;
+		cout << "ERROR::WINDOW.CPP::GLEW_GLFW_WINDOW_FAILED\n";
 		return;
 	}
 
-	glfwMakeContextCurrent(window_ptr);
+	glfwMakeContextCurrent(windowPtr);
 
 	if(glewInit())
 	{
-		cout<<"erorr initilize glew"<<endl;
+		cout << "ERROR::WINDOW.CPP::GLEW_INIT_FAILED\n";
 		return;
 	}
 
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-
-
-	Texture* ic = new Texture("devuong.png");
+	//set icon
+	Texture* ic = new Texture("Images\\devuong.png");
 	GLFWimage image;
-	image.height = ic->getheight();
-	image.width = ic->getwidth();
+	image.height = ic->GetHeight();
+	image.width = ic->GetWidght();
 	image.pixels = ic->getdata();
-	glfwSetWindowIcon(window_ptr,1,&image);
+	glfwSetWindowIcon(windowPtr,1,&image);
 	delete ic;
 
-
+	//vertex shader
 	const char* vs = R"CODE(
 			#version 450 core
 			layout(location = 0) in vec2 point;
@@ -62,7 +62,8 @@ Window::Window(int width, int height)
 				vertex_uv = uv;
 			};
 )CODE";
-	
+
+	//fragment shader
 	const char* fs = R"CODE(
 
 			#version 450 core
@@ -80,7 +81,7 @@ Window::Window(int width, int height)
 )CODE";
 
 
-	camera = new Camera(m_width,m_height);
+	camera = new Camera(_width,_height);
 	shader = new ShaderProgram(vs,fs);
 
 	game = new Game();
@@ -96,43 +97,43 @@ Window::~Window()
 
 void Window::Input()
 {
-	if(glfwGetKey(window_ptr,GLFW_KEY_ESCAPE))
+	if(glfwGetKey(windowPtr,GLFW_KEY_ESCAPE))
 	{
-		glfwSetWindowShouldClose(window_ptr,true);
+		glfwSetWindowShouldClose(windowPtr,true);
 	}
 
-	if(glfwGetKey(window_ptr,GLFW_KEY_UP) || glfwGetKey(window_ptr, GLFW_KEY_W))
+	if(glfwGetKey(windowPtr,GLFW_KEY_UP) || glfwGetKey(windowPtr, GLFW_KEY_W))
 	{
 		Action ac;
 		ac._type = MOVE_UP;
 		actions.push_back(ac);
 	}
 	
-	if(glfwGetKey(window_ptr,GLFW_KEY_DOWN) || glfwGetKey(window_ptr, GLFW_KEY_S))
+	if(glfwGetKey(windowPtr,GLFW_KEY_DOWN) || glfwGetKey(windowPtr, GLFW_KEY_S))
 	{
 		Action ac;
 		ac._type = MOVE_DOWN;
 		actions.push_back(ac);
 	}
 
-	if(glfwGetKey(window_ptr,GLFW_KEY_LEFT) || glfwGetKey(window_ptr, GLFW_KEY_A))
+	if(glfwGetKey(windowPtr,GLFW_KEY_LEFT) || glfwGetKey(windowPtr, GLFW_KEY_A))
 	{
 		Action ac;
 		ac._type = MOVE_LEFT;
 		actions.push_back(ac);
 	}
 
-	if(glfwGetKey(window_ptr,GLFW_KEY_RIGHT) || glfwGetKey(window_ptr, GLFW_KEY_D))
+	if(glfwGetKey(windowPtr,GLFW_KEY_RIGHT) || glfwGetKey(windowPtr, GLFW_KEY_D))
 	{
 		Action ac;
 		ac._type = MOVE_RIGHT;
 		actions.push_back(ac);
 	}
 
-	if (glfwGetMouseButton(window_ptr, GLFW_MOUSE_BUTTON_1) == GLFW_PRESS)
+	if (glfwGetMouseButton(windowPtr, GLFW_MOUSE_BUTTON_1) == GLFW_PRESS)
 	{
 		double xpos, ypos;
-		glfwGetCursorPos(window_ptr, &xpos, &ypos);
+		glfwGetCursorPos(windowPtr, &xpos, &ypos);
 		Action ac;
 
 		if (xpos <= 150 && xpos >= 50)
@@ -189,14 +190,71 @@ void Window::Input()
 		}
 		actions.push_back(ac);
 	}
+		if (glfwGetMouseButton(windowPtr, GLFW_MOUSE_BUTTON_1) == GLFW_PRESS)
+	{
+		double xpos, ypos;
+		glfwGetCursorPos(windowPtr, &xpos, &ypos);
+		Action ac;
 
-	if (glfwGetKey(window_ptr, GLFW_KEY_SPACE))
+		if(ypos <= 550 && ypos >= 400)
+		{
+			if (xpos <= 550 && xpos >= 400)
+				ac._type = SELECTWAREHOUSE1;
+			else if (xpos <= 700 && xpos >= 550)
+				ac._type = SELECTWAREHOUSE2;
+			else if (xpos <= 850 && xpos >= 700)
+				ac._type = SELECTWAREHOUSE3;
+			else if (xpos <= 1000 && xpos >= 850)
+				ac._type = SELECTWAREHOUSE4;
+			else if (xpos <= 1150 && xpos >= 1000)
+				ac._type = SELECTWAREHOUSE5;
+		}
+		else if (ypos <= 700 && ypos >= 550)
+		{
+			if (xpos <= 550 && xpos >= 400)
+				ac._type = SELECTWAREHOUSE6;
+			else if (xpos <= 700 && xpos >= 550)
+				ac._type = SELECTWAREHOUSE7;
+			else if (xpos <= 850 && xpos >= 700)
+				ac._type = SELECTWAREHOUSE8;
+			else if (xpos <= 1000 && xpos >= 850)
+				ac._type = SELECTWAREHOUSE9;
+			else if (xpos <= 1150 && xpos >= 1000)
+				ac._type = SELECTWAREHOUSE10;
+		}
+		else if (ypos <= 850 && ypos >= 700)
+		{
+			if (xpos <= 550 && xpos >= 400)
+				ac._type = SELECTWAREHOUSE11;
+			else if (xpos <= 700 && xpos >= 550)
+				ac._type = QUITWAREHOUSE;
+			//else if (xpos <= 550 && xpos >= 450)
+			//	ac._type = SELECTSPMENU3;
+			//else if (xpos <= 700 && xpos >= 600)
+			//	ac._type = SELECTSPMENU4;
+			//else if (xpos <= 700 && xpos >= 600)
+			//	ac._type = SELECTSPMENU5;
+		}
+		actions.push_back(ac);
+	}
+	if (glfwGetKey(windowPtr, GLFW_KEY_SPACE))
 	{
 		Action ac;
 		ac._type = PLANT;
 		actions.push_back(ac);
 	}
-
+	if (glfwGetKey(windowPtr, GLFW_KEY_SPACE))
+	{
+		Action ac;
+		ac._type = WAREHOUSE;
+		actions.push_back(ac);
+	}
+	if (glfwGetKey(windowPtr, GLFW_KEY_SPACE))
+	{
+		Action ac;
+		ac._type = SELL;
+		actions.push_back(ac);
+	}
 	game->input(actions);
 	actions.clear();
 }
@@ -204,36 +262,38 @@ void Window::Input()
 void Window::Resize()
 {
 	int width,height;
-	glfwGetWindowSize(window_ptr,&width,&height);
-	if(width != m_width || height != m_height)
+	glfwGetWindowSize(windowPtr,&width,&height);
+	if(width != _width || height != _height)
 	{
-		m_width = width;
-		m_height = height;
+		_width = width;
+		_height = height;
 		glViewport(0,0,width,height);
-		camera->Update_Viewport(m_width,m_height);
+		camera->Update_Viewport(_width,_height);
 	}
 }
 
+
 void Window::Mainloop()
 {
-	while (!glfwWindowShouldClose(window_ptr))
+	while (!glfwWindowShouldClose(windowPtr))
 	{
-		//for each frame 
+		//UPDATE INPUT---
+		glfwPollEvents();
+		//UPADTE---
 		Resize();
 		Input();
-
+		//DRAW---
+		//clear
 		glClearColor(0.0f,0.0f,0.0f,1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-
-		// all drawing goes here ..
+		//use a program
 		shader->use();
 		shader->Send_Mat4("projection", camera->Get_Projection());
-
+		//draw
 		game->Draw(shader);
-
-		glfwSwapBuffers(window_ptr);
-		glfwPollEvents();
+		//end draw
+		glfwSwapBuffers(windowPtr);
+		glFlush();
 	}
 }
 

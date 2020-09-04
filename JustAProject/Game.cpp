@@ -31,7 +31,7 @@ Game::Game()
 			tmp = 1;
 		}
 	}
-
+	clickWHMenu = false;
 	clickSubMenu = false;
 	int menux = 50, menuy = 300;
 	for (int i = 0; i < 3;i++)
@@ -44,9 +44,11 @@ Game::Game()
 	wareHouse = new Sprite("Images\\nhakho.png", glm::vec2(850, 400));
 	wareHouse->scale(glm::vec2(200));
 
-	inventory = new Sprite("kho.png", glm::vec2(850, 400));
-	wareHouse->scale(glm::vec2(300));
+	whmenu = new Sprite("Images\\menu\\background_menu.png", glm::vec2(400, 380));
+	whmenu->scale(glm::vec2(740, 450));
 	openEnventory = false;
+
+
 }
 
 Game::~Game()
@@ -55,7 +57,7 @@ Game::~Game()
 	delete background;
 	delete main;
 	delete selected;
-	delete inventory;
+	delete whmenu;
 	for (auto item : field)
 	{
 		delete item;
@@ -69,6 +71,7 @@ void Game::input(vector<Action> actions)
 {
 	glm::vec2 select;
 	bool slFlag = false, plantFlag = false, destroyPlantFlag = false;
+	bool whFlag = false, SellFlag = false, seFlag = false;
 	for (auto action : actions)
 	{
 		switch (action._type)
@@ -127,7 +130,6 @@ void Game::input(vector<Action> actions)
 			break;
 		case SELECTMENU2:
 			DesSubMenu();
-			openEnventory = true;
 			treeSelected = 0;
 			select = menuList[1].icon->getposition();
 			selected = new Sprite("Images\\menu\\selected.png", select);
@@ -227,8 +229,133 @@ void Game::input(vector<Action> actions)
 				treeSelected = 0;
 				DesSubMenu();
 			}
+		case SELECTWAREHOUSE1:
+			if (clickWHMenu == true)
+			{
+				if (rice != 0)
+				{
+					sellSelected = 1;
+					seFlag = true;
+				}
+			}
+			break;
+		case SELECTWAREHOUSE2:
+			if (clickWHMenu == true)
+			{
+				if (tomato != 0)
+				{
+					sellSelected = 2;
+					seFlag = true;
+				}
+			}
+			break;
+		case SELECTWAREHOUSE3:
+			if (clickWHMenu == true)
+			{
+				if (carot != 0)
+				{
+					sellSelected = 3;
+					seFlag = true;
+				}
+			}
+			break;
+		case SELECTWAREHOUSE4:
+			if (clickWHMenu == true)
+			{
+				if (pineApple != 0)
+				{
+					sellSelected = 4;
+					seFlag = true;
+				}
+			}
+			break;
+		case SELECTWAREHOUSE5:
+			if (clickWHMenu == true)
+			{
+				if (waterMelon != 0)
+				{
+					sellSelected = 5;
+					seFlag = true;
+				}
+			}
+			break;
+		case SELECTWAREHOUSE6:
+			if (clickWHMenu == true)
+			{
+				if (grape != 0)
+				{
+					sellSelected = 6;
+					seFlag = true;
+				}
+			}
+			break;
+		case SELECTWAREHOUSE7:
+			if (clickWHMenu == true)
+			{
+				if (rose != 0)
+				{
+					sellSelected = 7;
+					seFlag = true;
+				}
+			}
+			break;
+		case SELECTWAREHOUSE8:
+			if (clickWHMenu == true)
+			{
+				if (mango != 0)
+				{
+					sellSelected = 8;
+					seFlag = true;
+				}
+			}
+			break;
+		case SELECTWAREHOUSE9:
+			if (clickWHMenu == true)
+			{
+				if (dragonFruit != 0)
+				{
+					sellSelected = 9;
+					seFlag = true;
+				}
+			}
+			break;
+		case SELECTWAREHOUSE10:
+			if (clickWHMenu == true)
+			{
+				if (sunFlower != 0)
+				{
+					sellSelected = 10;
+					seFlag = true;
+				}
+			}
+			break;
+		case SELECTWAREHOUSE11:
+			if (clickWHMenu == true)
+			{
+				if (tulip != 0)
+				{
+					sellSelected = 11;
+					seFlag = true;
+				}
+			}
+			break;
+		case QUITWAREHOUSE:
+			if (clickWHMenu == true)
+			{
+				sellSelected = 0;
+				SellFlag = true;
+				DesWHMenu();
+				openEnventory = false;
+			}
+			break;
 		case PLANT:
 			plantFlag = true;
+			break;
+		case WAREHOUSE:
+			whFlag = true;
+			break;
+		case SELL:
+			SellFlag = true;
 			break;
 		default:
 			break;
@@ -237,11 +364,23 @@ void Game::input(vector<Action> actions)
 
 	if (treeSelected != 0 && slFlag)
 	{
-		cout << treeSelected;
+		/*cout << treeSelected;*/
 		select = subMenuList[treeSelected - 1].icon->getposition();
 		selected = new Sprite("Images\\menu\\selected.png", select);
 		selected->scale(glm::vec2(110));
 		slFlag = false;
+	}
+	if (sellSelected != 0 && seFlag)
+	{
+		/*cout << treeSelected;*/
+		select = WHMenuList[sellSelected - 1].icon->getposition();
+		selected = new Sprite("Images\\menu\\selected.png", select);
+		selected->scale(glm::vec2(110));
+		slFlag = false;
+	}
+	if (SellFlag == true && sellSelected != 0)
+	{
+		cout << Sell(sellSelected);
 	}
 
 	for (auto i : field)
@@ -254,11 +393,11 @@ void Game::input(vector<Action> actions)
 		if (i->getStatus() != BLANK)
 		{
 			int duration = (std::clock() - start) / (int)CLOCKS_PER_SEC;
-			cout << duration << endl;
+			/*cout << duration << endl;*/
 			if (duration- (i->plantTime) == (i->life / 2) /*&& duration - (i->plantTime) < (i->life)*/ && i->getStatus() != MIDDLE && i->getStatus() != RIPEN)
 			{
 				i->setStatus(MIDDLE);
-				cout << i->getStatus();
+				/*cout << i->getStatus();*/
 				i->image = new Sprite(plantList[i->plantID - 1]->getImage(i->getStatus()), glm::vec2(x, y));
 				i->image->scale(glm::vec2(70));
 				return;
@@ -270,6 +409,24 @@ void Game::input(vector<Action> actions)
 				i->image->scale(glm::vec2(70));
 				return;
 			}
+		}
+		if (main->getposition().x >= wareHouse->getposition().x - 50 && main->getposition().x <= wareHouse->getposition().x + 150)
+		{
+			if (through(main->getposition().x, main->getposition().y, wareHouse->getposition().x + 100, wareHouse->getposition().y + 150))
+			{
+				target = new Sprite("Images\\target.png", glm::vec2(wareHouse->getposition().x + 80, wareHouse->getposition().y + 150));
+				target->scale(glm::vec2(50));
+				if (whFlag == true)
+				{
+					openEnventory = true;
+					LoadWHMenu();
+
+					select = menuList[0].icon->getposition();
+					selected = new Sprite("Images\\menu\\selected.png", glm::vec2(400, 400));
+					selected->scale(glm::vec2(110));
+				}
+			}
+
 		}
 	}
 
@@ -288,7 +445,7 @@ void Game::input(vector<Action> actions)
 			field[getTarget()]->plantID = treeSelected;
 			field[getTarget()]->plantTime = (std::clock() - start) / (int)CLOCKS_PER_SEC;
 			plantFlag = false;
-			cout << plantList[treeSelected - 1]->getImage(field[getTarget()]->getStatus());
+			/*cout << plantList[treeSelected - 1]->getImage(field[getTarget()]->getStatus());*/
 		}
 		else if (destroyPlantFlag == true)
 		{
@@ -297,8 +454,18 @@ void Game::input(vector<Action> actions)
 			field[getTarget()]->image->scale(glm::vec2(70));
 			destroyPlantFlag = false;
 		}
+		else if (plantFlag == true && field[getTarget()]->isRipen() == false)
+		{
+			plantFlag = false;
+			field[getTarget()]->image = new Sprite("Images\\plant\\0.png", glm::vec2(targetx, targety));
+			field[getTarget()]->image->scale(glm::vec2(70));
+			field[getTarget()]->setStatus(BLANK);
+			cropTree(plantList[field[getTarget()]->plantID]->getId() - 1);
+			
+		}
 	}
 }
+
 
 void Game::Draw(ShaderProgram* shader)
 {
@@ -307,6 +474,8 @@ void Game::Draw(ShaderProgram* shader)
 	shader->Send_Mat4("model_matrx", background->transformation());
 	background->draw();
 
+	
+	//main
 	glPointSize(4);
 	glBegin(GL_POINT);
 	glVertex2f(main->getposition().x, main->getposition().y);
@@ -357,12 +526,38 @@ void Game::Draw(ShaderProgram* shader)
 	shader->Send_Mat4("model_matrx", wareHouse->transformation());
 	wareHouse->draw();
 
+	//mtnhakho
+	if (main->getposition().x >= wareHouse->getposition().x - 50 && main->getposition().x <= wareHouse->getposition().x + 150)
+	{
+		if (through(main->getposition().x, main->getposition().y, wareHouse->getposition().x + 100, wareHouse->getposition().y + 150))
+		{
+			shader->Send_Mat4("model_matrx", target->transformation());
+			target->draw();
+
+		}
+	}
+
 	if (openEnventory == true)
 	{
-		shader->Send_Mat4("model_matrx", inventory->transformation());
-		inventory->draw();
+		shader->Send_Mat4("model_matrx", whmenu->transformation());
+		whmenu->draw();
 	}
+	//menuKho
+	for (auto menu : WHMenuList)
+	{
+		shader->Send_Mat4("model_matrx", menu.icon->transformation());
+		menu.icon->draw();
+	}
+
+	
+	////menuKho
+	//for (auto menu : WHQuantity)
+	//{
+	//	shader->Send_Mat4("model_matrx", menu.icon->transformation());
+	//	menu.icon->draw();
+	//}
 }
+
 
 void Game::CreatePlantList()
 {
@@ -374,52 +569,52 @@ void Game::CreatePlantList()
 	plantList.push_back(new Plants(2, 10, 100, 100,
 		"Images\\menu\\2.png",
 		"Images\\plant\\gieohat.png",
-		"Images\\plant\\2-uong.png",
+		"Images\\plant\\mam.png",
 		"Images\\plant\\2-chin.png"));
 	plantList.push_back(new Plants(3, 10, 100, 100,
 		"Images\\menu\\3.png",
 		"Images\\plant\\gieohat.png",
-		"Images\\plant\\3-uong.png",
+		"Images\\plant\\mam.png",
 		"Images\\plant\\3-chin.png"));
 	plantList.push_back(new Plants(4, 10, 100, 100,
 		"Images\\menu\\4.png",
 		"Images\\plant\\gieohat.png",
-		"Images\\plant\\4-uong.png",
+		"Images\\plant\\mam.png",
 		"Images\\plant\\4-chin.png"));
 	plantList.push_back(new Plants(5, 10, 100, 100,
 		"Images\\menu\\5.png",
 		"Images\\plant\\gieohat.png",
-		"Images\\plant\\5-uong.png",
+		"Images\\plant\\mam.png",
 		"Images\\plant\\5-chin.png"));
 	plantList.push_back(new Plants(6, 100, 100, 100,
 		"Images\\menu\\6.png",
 		"Images\\plant\\gieohat.png",
-		"Images\\plant\\6-uong.png",
+		"Images\\plant\\mam.png",
 		"Images\\plant\\6-chin.png"));
 	plantList.push_back(new Plants(7, 100, 100, 100,
 		"Images\\menu\\7.png",
 		"Images\\plant\\gieohat.png",
-		"Images\\plant\\7-uong.png",
+		"Images\\plant\\mam.png",
 		"Images\\plant\\7-chin.png"));
 	plantList.push_back(new Plants(8, 100, 100, 100,
 		"Images\\menu\\8.png",
 		"Images\\plant\\gieohat.png",
-		"Images\\plant\\8-uong.png",
+		"Images\\plant\\mam.png",
 		"Images\\plant\\8-chin.png"));
 	plantList.push_back(new Plants(9, 100, 100, 100,
 		"Images\\menu\\9.png",
 		"Images\\plant\\gieohat.png",
-		"Images\\plant\\9-uong.png",
+		"Images\\plant\\mam.png",
 		"Images\\plant\\9-chin.png"));
 	plantList.push_back(new Plants(10, 100, 100, 100,
 		"Images\\menu\\10.png",
 		"Images\\plant\\gieohat.png",
-		"Images\\plant\\10-uong.png",
+		"Images\\plant\\mam.png",
 		"Images\\plant\\10-chin.png"));
 	plantList.push_back(new Plants(11, 100, 100, 100,
 		"Images\\menu\\11.png",
 		"Images\\plant\\gieohat.png",
-		"Images\\plant\\11-uong.png",
+		"Images\\plant\\mam.png",
 		"Images\\plant\\11-chin.png"));
 }
 
@@ -450,14 +645,44 @@ void Game::LoadSubMenu()
 
 	clickSubMenu = true;
 }
+void Game::LoadWHMenu()
+{
+
+	int menux = 400, menuy = 400, menuID = 1;
+
+	for (menuID = 1; menuID<12; menuID++)
+	{
+		string path = "Images\\menu\\" + to_string(menuID) + ".png";
+		WHMenuList.push_back(Menu(to_string(menuID), new Sprite(path.c_str(), glm::vec2(menux, menuy))));
+		WHMenuList[menuID - 1].icon->scale(glm::vec2(100));
+		//WHQuantity.push_back(Menu(to_string(menuID), new Sprite("Images\\Soluong\\0.png", glm::vec2(menux, menuy + 100))));
+		//WHQuantity[menuID - 1].icon->scale(glm::vec2(10));
+		if (menuID % 5 != 0)
+		{
+			menux += 150;
+		}
+		else
+		{
+			menux = 400;
+			menuy += 150;
+		}
+		
+	}
+	
+	WHMenuList.push_back(Menu("0", new Sprite("Images\\menu\\x.png", glm::vec2(menux, menuy))));
+	WHMenuList[menuID - 1].icon->scale(glm::vec2(100));
+
+	clickWHMenu = true;
+}
 
 void Game::DesSubMenu()
 {
 	subMenuList.clear();
 }
 
-void Game::LoadInventory()
+void Game::DesWHMenu()
 {
+	WHMenuList.clear();
 }
 
 int Game::getTarget()
@@ -495,6 +720,54 @@ bool Game::through(int x, int y, int a, int b)
 	}
 	return false;
 }
-
-
+int Game::cropTree(int x)
+{
+	if (x == 1)
+		return  rice += plantList[1]->getQuanity();
+	else if (x == 2)
+		return  tomato += plantList[2]->getQuanity();
+	else if (x == 3)
+		return  carot += plantList[3]->getQuanity();
+	else if (x == 4)
+		return  pineApple += plantList[4]->getQuanity();
+	else if (x == 5)
+		return  waterMelon += plantList[5]->getQuanity();
+	else if (x == 6)
+		return  grape += plantList[6]->getQuanity();
+	else if (x == 7)
+		return  rose += plantList[7]->getQuanity();
+	else if (x == 8)
+		return  mango += plantList[8]->getQuanity();
+	else if (x == 9)
+		return  dragonFruit += plantList[9]->getQuanity();
+	else if (x == 10)
+		return  sunFlower += plantList[10]->getQuanity();
+	else if (x == 11)
+		return  tulip += plantList[11]->getQuanity();
+}
+int Game::Sell(int x)
+{
+	if (x == 1)
+		return  rice * plantList[1]->getPrice();
+	else if (x == 2)
+		return  tomato* plantList[2]->getPrice();
+	else if (x == 3)
+		return  carot* plantList[3]->getPrice();
+	else if (x == 4)
+		return  pineApple* plantList[4]->getPrice();
+	else if (x == 5)
+		return  waterMelon* plantList[5]->getPrice();
+	else if (x == 6)
+		return  grape* plantList[6]->getPrice();
+	else if (x == 7)
+		return  rose* plantList[7]->getPrice();
+	else if (x == 8)
+		return  mango* plantList[8]->getPrice();
+	else if (x == 9)
+		return  dragonFruit* plantList[9]->getPrice();
+	else if (x == 10)
+		return  sunFlower* plantList[10]->getPrice();
+	else if (x == 11)
+		return  tulip* plantList[11]->getPrice();
+}
 

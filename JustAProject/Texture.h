@@ -9,9 +9,10 @@ public:
 
 	void use();
 
-	int getwidth();
+	int GetWidght();
 
-	int getheight();
+	int GetHeight();
+
 
 	unsigned char* getdata();
 

@@ -1,19 +1,23 @@
 #include "Rectangle.h"
 
-Rectangle::Rectangle() : 
-	position(glm::vec2(0)),
-	scale(glm::vec2(1)),
-	rotaion_angle(0.0f)
+Rectangle::Rectangle()
 {
+	position = glm::vec2(0);
+	scale = glm::vec2(1);
+	rotaionAngle = 0.0f;
+
+	//positon of 2 triangle inside a rectangle
 	glm::vec2 arr[6] = {
 		glm::vec2(0,0),
 		glm::vec2(0,1),
 		glm::vec2(1,0),
+
 		glm::vec2(1,0),
 		glm::vec2(0,1),
 		glm::vec2(1,1)
 	};
 
+	//color matrix
 	glm::vec4 colors[6] = {
 		glm::vec4(1,1,1,1),
 		glm::vec4(1,1,1,1),
@@ -22,8 +26,9 @@ Rectangle::Rectangle() :
 		glm::vec4(1,1,1,1),
 		glm::vec4(1,1,1,1)
 	};
-
+	//
 	glm::vec2 uv[6] = {
+		//positon of 2 triangle inside a rectangle
 		glm::vec2(0,0),
 		glm::vec2(0,1),
 		glm::vec2(1,0),
@@ -36,8 +41,6 @@ Rectangle::Rectangle() :
 	glGenBuffers(1,&VBO);
 	glGenBuffers(1,&CBO);
 	glGenBuffers(1,&UVBO);
-
-
 
 	glBindVertexArray(VAO);
 	
@@ -62,9 +65,7 @@ Rectangle::Rectangle() :
 	glEnableVertexAttribArray(2);
 	glVertexAttribPointer(2,2,GL_FLOAT,false,0,NULL);
 
-
 	glBindBuffer(GL_ARRAY_BUFFER,0);
-
 }
 
 Rectangle::~Rectangle()
@@ -73,8 +74,9 @@ Rectangle::~Rectangle()
 	glDeleteBuffers(1,&VBO);
 	glDeleteBuffers(1,&CBO);
 	glDeleteBuffers(1,&UVBO);
-
 }
+
+
 
 void Rectangle::Draw()
 {
@@ -82,13 +84,14 @@ void Rectangle::Draw()
 	glDrawArrays(GL_TRIANGLES,0,6);
 }
 
-glm::mat4 Rectangle::GetTransformationMatrx()
+
+glm::mat4 Rectangle::GetTransformation()
 {
-	glm::mat4 tarnslation = glm::translate(glm::mat4(1.0f),glm::vec3(position,1.0f));
-	glm::mat4 Rotation = glm::rotate(glm::mat4(1.0f),rotaion_angle,glm::vec3(0.0f,0.0f,1.0f));
+	glm::mat4 translation = glm::translate(glm::mat4(1.0f),glm::vec3(position,1.0f));
+	glm::mat4 Rotation = glm::rotate(glm::mat4(1.0f),rotaionAngle,glm::vec3(0.0f,0.0f,1.0f));
 	glm::mat4 scal = glm::scale(glm::mat4(1.0f),glm::vec3(scale,1.0f));
 
-	return tarnslation * scal * Rotation ;
+	return translation * scal * Rotation ;
 }
 
 void Rectangle::setposition(glm::vec2 pos)
@@ -103,7 +106,7 @@ void Rectangle::setscale(glm::vec2 scal)
 
 void Rectangle::setrotation(float rotation)
 {
-	rotaion_angle = rotation;
+	rotaionAngle = rotation;
 }
 
 glm::vec2 Rectangle::getposition()
@@ -118,5 +121,5 @@ glm::vec2 Rectangle::getscale()
 
 float Rectangle::getrotation()
 {
-	return rotaion_angle;
+	return rotaionAngle;
 }

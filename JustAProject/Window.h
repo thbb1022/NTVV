@@ -21,13 +21,13 @@ public:
 
 private:
 
-	int m_width,m_height;
-	GLFWwindow *window_ptr;
+	int _width, _height;
+	GLFWwindow *windowPtr;
 
 	ShaderProgram* shader;
 	Camera* camera;
 
 	Game* game;
 	vector<Action> actions;
-	static int key_state;
+	static int keyState;
 };

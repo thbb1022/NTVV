@@ -7,10 +7,10 @@ public:
 	Rectangle();
 
 	~Rectangle();
-
+	
 	void Draw();
 
-	glm::mat4 GetTransformationMatrx();
+	glm::mat4 GetTransformation();
 
 	void setposition(glm::vec2 pos);
 
@@ -30,7 +30,7 @@ private:
 
 	glm::vec2 position;
 	glm::vec2 scale;
-	float rotaion_angle;
+	float rotaionAngle;
 
 	unsigned int VAO; //vertex array object
 	unsigned int VBO; // vertex buffer object

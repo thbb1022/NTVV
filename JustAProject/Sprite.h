@@ -8,7 +8,7 @@ public:
 	Sprite(const char* imagepath, glm::vec2 position);
 
 	~Sprite();
-
+	
 	void draw();
 
 	glm::mat4 transformation();

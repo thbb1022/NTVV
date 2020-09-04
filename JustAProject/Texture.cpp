@@ -20,7 +20,7 @@ Texture::Texture(const char * filepath)
 	}
 	else
 	{
-		cout << "failed to load image : "<< filepath <<endl;
+		cout << "ERROR::TEXTURE.CPP:COULD_NOT_OPEN_IMAGE_FILE:"<< filepath <<"\n";
 		cout << "============================================"<<endl;
 		stbi_image_free(data);
 	}
@@ -36,12 +36,12 @@ void Texture::use()
 	glBindTexture(GL_TEXTURE_2D, textureID);
 }
 
-int Texture::getwidth()
+int Texture::GetWidght()
 {
 	return width;
 }
 
-int Texture::getheight()
+int Texture::GetHeight()
 {
 	return height;
 }

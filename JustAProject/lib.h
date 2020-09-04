@@ -5,12 +5,16 @@
 #include <fstream>
 #include <string>
 #include <ctime>
+#include <sstream>
+#include <memory>
+#include <map>
 
 #include "glew.h"
 #include "glut.h"
 #include "glfw3.h"
 #include "glm\glm.hpp"
 #include "glm\gtc\matrix_transform.hpp"
+#include "stb_truetype.h""
 
 #pragma comment(lib, "glew32.lib")
 #pragma comment(lib, "opengl32.lib")

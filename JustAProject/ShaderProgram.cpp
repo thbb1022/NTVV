@@ -1,20 +1,19 @@
 #include "ShaderProgram.h"
 
-
-ShaderProgram::ShaderProgram(const char * vertex_shader, const char * fragment_shader)
+ShaderProgram::ShaderProgram(const char * vertexShader, const char * fragnentShader)
 {
-	// compile shader ..
+	// compile shader
 	unsigned int vertex, fragment;
 
 	// vertex shader
 	vertex  = glCreateShader(GL_VERTEX_SHADER);
-	glShaderSource(vertex,1, &vertex_shader,NULL);
+	glShaderSource(vertex,1, &vertexShader,NULL);
 	glCompileShader(vertex);
 	checkerorr(vertex,"VERTEX");
 
 	// fragment shader
 	fragment  = glCreateShader(GL_FRAGMENT_SHADER);
-	glShaderSource(fragment,1, &fragment_shader,NULL);
+	glShaderSource(fragment,1, &fragnentShader,NULL);
 	glCompileShader(fragment);
 	checkerorr(vertex,"FRAGMENT");
 
@@ -29,6 +28,7 @@ ShaderProgram::ShaderProgram(const char * vertex_shader, const char * fragment_s
 
 	glDeleteShader(vertex);
 	glDeleteShader(fragment);
+
 }
 
 ShaderProgram::~ShaderProgram()
@@ -40,6 +40,8 @@ void ShaderProgram::use()
 {
 	glUseProgram(ID);
 }
+
+
 
 void ShaderProgram::Send_Mat4(const char * name, glm::mat4& mat)
 {

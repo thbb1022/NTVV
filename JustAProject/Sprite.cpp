@@ -22,7 +22,7 @@ void Sprite::draw()
 
 glm::mat4 Sprite::transformation()
 {
-	return rectangle->GetTransformationMatrx();
+	return rectangle->GetTransformation();
 }
 
 void Sprite::move_up(float speed)

@@ -6,6 +6,7 @@
 #include "FieldFrag.h"
 #include "Plants.h"
 #include "Camera.h"
+#include "Text.h"
 
 using namespace std;
 
@@ -103,4 +104,6 @@ private:
 	int cropTree(int x);
 	bool through(int x, int y, int a, int b);
 	int Sell(int x);
+	//
+	vector<Sprite*> textImg;
 };

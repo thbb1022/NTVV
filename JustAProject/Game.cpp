@@ -46,9 +46,10 @@ Game::Game()
 
 	whmenu = new Sprite("Images\\menu\\background_menu.png", glm::vec2(400, 380));
 	whmenu->scale(glm::vec2(740, 450));
-	openEnventory = false;
-
-
+	openEnventory = false;	
+	
+	Text *text = new Text("abc123ABC", glm::vec2(300, 300), glm::vec2(50));
+	textImg = text->charImgList;
 }
 
 Game::~Game()
@@ -549,6 +550,13 @@ void Game::Draw(ShaderProgram* shader)
 		menu.icon->draw();
 	}
 
+	//text 
+	for (auto item : textImg)
+	{
+		shader->Send_Mat4("model_matrx", item->transformation());
+		item->draw();
+	}
+
 	
 	////menuKho
 	//for (auto menu : WHQuantity)
@@ -645,6 +653,7 @@ void Game::LoadSubMenu()
 
 	clickSubMenu = true;
 }
+
 void Game::LoadWHMenu()
 {
 
@@ -712,6 +721,7 @@ int Game::getTarget()
 	}
 	return -1;
 }
+
 bool Game::through(int x, int y, int a, int b)
 {
 	if (x - a <= 50 && y - b <= 50)
@@ -720,6 +730,7 @@ bool Game::through(int x, int y, int a, int b)
 	}
 	return false;
 }
+
 int Game::cropTree(int x)
 {
 	if (x == 1)
@@ -745,6 +756,7 @@ int Game::cropTree(int x)
 	else if (x == 11)
 		return  tulip += plantList[11]->getQuanity();
 }
+
 int Game::Sell(int x)
 {
 	if (x == 1)

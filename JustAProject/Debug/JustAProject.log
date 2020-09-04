@@ -1,4 +1,5 @@
-﻿  Window.cpp
+﻿  Text.cpp
 e:\work space\ntvv\justaproject\lib.h(17): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+e:\work space\ntvv\justaproject\text.cpp(6): warning C4018: '<': signed/unsigned mismatch
   JustAProject.vcxproj -> E:\Work space\NTVV\Debug\JustAProject.exe
   JustAProject.vcxproj -> E:\Work space\NTVV\Debug\JustAProject.pdb (Partial PDB)

@@ -27,6 +27,7 @@
     <ClInclude Include="Rectangle.h" />
     <ClInclude Include="ShaderProgram.h" />
     <ClInclude Include="Sprite.h" />
+    <ClInclude Include="Text.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="Window.h" />
   </ItemGroup>
@@ -39,6 +40,7 @@
     <ClCompile Include="Rectangle.cpp" />
     <ClCompile Include="ShaderProgram.cpp" />
     <ClCompile Include="Sprite.cpp" />
+    <ClCompile Include="Text.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="Window.cpp" />
   </ItemGroup>

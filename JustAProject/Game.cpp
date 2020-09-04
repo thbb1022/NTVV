@@ -48,7 +48,7 @@ Game::Game()
 	whmenu->scale(glm::vec2(740, 450));
 	openEnventory = false;	
 	
-	Text *text = new Text("abc123ABC", glm::vec2(300, 300), glm::vec2(50));
+	Text *text = new Text("A    BC!  z", glm::vec2(300, 300), glm::vec2(50));
 	textImg = text->charImgList;
 }
 

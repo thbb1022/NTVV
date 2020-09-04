@@ -1,5 +1,4 @@
-﻿  Text.cpp
-e:\work space\ntvv\justaproject\lib.h(17): warning C4067: unexpected tokens following preprocessor directive - expected a newline
-e:\work space\ntvv\justaproject\text.cpp(6): warning C4018: '<': signed/unsigned mismatch
+﻿  LINK : E:\Work space\NTVV\Debug\JustAProject.exe not found or not built by the last incremental link; performing full link
+LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library
   JustAProject.vcxproj -> E:\Work space\NTVV\Debug\JustAProject.exe
   JustAProject.vcxproj -> E:\Work space\NTVV\Debug\JustAProject.pdb (Partial PDB)

@@ -1,6 +1,7 @@
 #pragma once
 #include "lib.h"
 #include "Sprite.h"
+#include <ctype.h>
 
 struct Character
 {

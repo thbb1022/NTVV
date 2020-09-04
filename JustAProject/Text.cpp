@@ -6,6 +6,7 @@ Text::Text(string text, glm::vec2 positon, glm::vec2 scale)
 	for (int i = 0; i < text.length(); i++)
 	{
 		char tmp = text.at(i);
+		cout << tmp;
 		for (auto item : characters)
 		{
 			if (item.name == tmp)
@@ -30,13 +31,14 @@ Text::~Text()
 void Text::LoadTextSource()
 {
 	characters = {
-		Character(' ', "Images\\Text\\tile001.png"),
-		Character('!', "Images\\Text\\tile002.png"),
-		Character('\"', "Images\\Text\\tile003.png"),
-		Character('#', "Images\\Text\\tile004.png"),
-		Character('$', "Images\\Text\\tile005.png"),
-		Character('%', "Images\\Text\\tile006.png"),
-		Character('&', "Images\\Text\\tile007.png"),
+		Character(' ', "Images\\Text\\tile000.png"),
+		Character('!', "Images\\Text\\tile001.png"),
+		Character('\"', "Images\\Text\\tile002.png"),
+		Character('#', "Images\\Text\\tile003.png"),
+		Character('$', "Images\\Text\\tile004.png"),
+		Character('%', "Images\\Text\\tile005.png"),
+		Character('&', "Images\\Text\\tile006.png"),
+		Character('\'', "Images\\Text\\tile007.png"),
 		Character('(', "Images\\Text\\tile008.png"),
 		Character(')', "Images\\Text\\tile009.png"),
 		Character('*', "Images\\Text\\tile010.png"),

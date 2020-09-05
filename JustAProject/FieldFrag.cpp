@@ -23,6 +23,7 @@ bool FieldFrag::isRipen()
 	else return false;
 }
 
+
 void FieldFrag::setStatus(PlantStatus _stt)
 {
 	stt = _stt;

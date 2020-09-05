@@ -3,14 +3,14 @@
 Game::Game()
 {
 	CreatePlantList();
-	start = std::clock(); 
-
+	start = std::clock();
 	background = new Sprite("Images\\bg.png",glm::vec2(0));
 	background->scale(glm::vec2(2000,2000));
-
+	dogTime = 0;
 	main = new Sprite("Images\\laibuon.png", glm::vec2(700, 500));
 	main->scale(glm::vec2(100));
-
+	mainDir = false;
+	harvestFlag = false;
 	float x = 1300, y = 550, tmp = 1;
 	for (int i = 0; i < 25; i++)
 	{
@@ -46,10 +46,10 @@ Game::Game()
 
 	whmenu = new Sprite("Images\\menu\\background_menu.png", glm::vec2(400, 380));
 	whmenu->scale(glm::vec2(740, 450));
-	openEnventory = false;	
-	
-	Text *text = new Text("A    BC!  z", glm::vec2(300, 300), glm::vec2(50));
-	textImg = text->charImgList;
+	openEnventory = false;
+
+	dog = new Sprite("Images\\cho.png", glm::vec2(300, 500));
+	dog->scale(glm::vec2(100));
 }
 
 Game::~Game()
@@ -59,6 +59,7 @@ Game::~Game()
 	delete main;
 	delete selected;
 	delete whmenu;
+	delete dog;
 	for (auto item : field)
 	{
 		delete item;
@@ -102,12 +103,28 @@ void Game::input(vector<Action> actions)
 				if (through(main->getposition().x, main->getposition().y, wareHouse->getposition().x + 150, wareHouse->getposition().y + 100))
 					main->move_left(0);
 				else
+				{
+					if (mainDir == false)
+					{
+						main = new Sprite("Images\\laibuon2.png", main->getposition());
+						main->scale(glm::vec2(100));
+						mainDir = true;
+					}
 					main->move_left(2);
+				}
 			}
 			else if (main->getposition().x <= 0)
 				main->move_left(0);
 			else
+			{
+				if (mainDir == false)
+				{
+					main = new Sprite("Images\\laibuon2.png", main->getposition());
+					main->scale(glm::vec2(100));
+					mainDir = true;
+				}
 				main->move_left(2);
+			}
 			break;
 		case MOVE_RIGHT:
 			if (main->getposition().x + 80 >= wareHouse->getposition().x && main->getposition().x <= wareHouse->getposition().x + 150)
@@ -115,12 +132,28 @@ void Game::input(vector<Action> actions)
 				if (through(main->getposition().x, main->getposition().y, wareHouse->getposition().x, wareHouse->getposition().y + 100))
 					main->move_right(0);
 				else
+				{
+					if (mainDir == true)
+					{
+						main = new Sprite("Images\\laibuon.png", main->getposition());
+						main->scale(glm::vec2(100));
+						mainDir = false;
+					}
 					main->move_right(2);
+				}
 			}
 			else if (main->getposition().x >= 1850)
 				main->move_left(0);
 			else
+			{
+				if (mainDir == true)
+				{
+					main = new Sprite("Images\\laibuon.png", main->getposition());
+					main->scale(glm::vec2(100));
+					mainDir = false;
+				}
 				main->move_right(2);
+			}
 			break;
 		case SELECTMENU1:
 			LoadSubMenu();
@@ -128,6 +161,7 @@ void Game::input(vector<Action> actions)
 			select = menuList[0].icon->getposition();
 			selected = new Sprite("Images\\menu\\selected.png", select);
 			selected->scale(glm::vec2(110));
+			harvestFlag = false;
 			break;
 		case SELECTMENU2:
 			DesSubMenu();
@@ -135,6 +169,7 @@ void Game::input(vector<Action> actions)
 			select = menuList[1].icon->getposition();
 			selected = new Sprite("Images\\menu\\selected.png", select);
 			selected->scale(glm::vec2(110));
+			harvestFlag = true;
 			break;
 		case SELECTMENU3:
 			destroyPlantFlag = true;
@@ -143,6 +178,7 @@ void Game::input(vector<Action> actions)
 			select = menuList[2].icon->getposition();
 			selected = new Sprite("Images\\menu\\selected.png", select);
 			selected->scale(glm::vec2(110));
+			harvestFlag = false;
 			break;
 		case SELECTSPMENU1:
 			if (clickSubMenu == true)
@@ -455,14 +491,13 @@ void Game::input(vector<Action> actions)
 			field[getTarget()]->image->scale(glm::vec2(70));
 			destroyPlantFlag = false;
 		}
-		else if (plantFlag == true && field[getTarget()]->isRipen() == false)
+		else if (plantFlag == true && harvestFlag == true && field[getTarget()]->isRipen() == false)
 		{
-			plantFlag = false;
 			field[getTarget()]->image = new Sprite("Images\\plant\\0.png", glm::vec2(targetx, targety));
 			field[getTarget()]->image->scale(glm::vec2(70));
 			field[getTarget()]->setStatus(BLANK);
 			cropTree(plantList[field[getTarget()]->plantID]->getId() - 1);
-			
+			plantFlag = false;
 		}
 	}
 }
@@ -475,12 +510,6 @@ void Game::Draw(ShaderProgram* shader)
 	shader->Send_Mat4("model_matrx", background->transformation());
 	background->draw();
 
-	
-	//main
-	glPointSize(4);
-	glBegin(GL_POINT);
-	glVertex2f(main->getposition().x, main->getposition().y);
-	glEnd();
 
 	//field
 
@@ -510,6 +539,9 @@ void Game::Draw(ShaderProgram* shader)
 	//nv
 	shader->Send_Mat4("model_matrx", main->transformation());
 	main->draw();
+	//dog
+	shader->Send_Mat4("model_matrx", dog->transformation());
+	dog->draw();
 
 	//mui ten
 	if(getTarget() !=-1)
@@ -550,13 +582,6 @@ void Game::Draw(ShaderProgram* shader)
 		menu.icon->draw();
 	}
 
-	//text 
-	for (auto item : textImg)
-	{
-		shader->Send_Mat4("model_matrx", item->transformation());
-		item->draw();
-	}
-
 	
 	////menuKho
 	//for (auto menu : WHQuantity)
@@ -564,6 +589,7 @@ void Game::Draw(ShaderProgram* shader)
 	//	shader->Send_Mat4("model_matrx", menu.icon->transformation());
 	//	menu.icon->draw();
 	//}
+	makeNewDogPostion();
 }
 
 
@@ -734,7 +760,7 @@ bool Game::through(int x, int y, int a, int b)
 int Game::cropTree(int x)
 {
 	if (x == 1)
-		return  rice += plantList[1]->getQuanity();
+		rice += plantList[1]->getQuanity();
 	else if (x == 2)
 		return  tomato += plantList[2]->getQuanity();
 	else if (x == 3)
@@ -781,5 +807,24 @@ int Game::Sell(int x)
 		return  sunFlower* plantList[10]->getPrice();
 	else if (x == 11)
 		return  tulip* plantList[11]->getPrice();
+}
+
+void Game::makeNewDogPostion()
+{
+	int duration = (std::clock() - start) / (int)CLOCKS_PER_SEC;
+	if (duration - dogTime >= 5)
+	{
+		//x: 0 -> 1000
+		//y: 300 -> 700
+		cout << "pass 5\n";
+
+		//end
+		dogTime += 5;
+	}
+}
+
+int Game::random(int minN, int maxN)
+{
+	return rand() % ((maxN - minN) + 1) + minN;
 }
 

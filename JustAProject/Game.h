@@ -54,7 +54,6 @@ enum Type
 struct Action
 {
 	Type _type;
-	std::pair<bool,char> iskey_pressed;
 };
 
 struct Menu
@@ -87,6 +86,7 @@ private:
 	vector<FieldFrag*> field;
 	vector<Plants*> plantList;
 	Sprite * target;
+	Sprite * dog;
 	Sprite* wareHouse;
 	int treeSelected, sellSelected;
 	int  rice = 0, tomato = 0, carot=0, pineApple = 0, waterMelon = 0, grape = 0, rose = 0, mango = 0, dragonFruit = 0, sunFlower = 0, tulip = 0;
@@ -105,5 +105,9 @@ private:
 	bool through(int x, int y, int a, int b);
 	int Sell(int x);
 	//
-	vector<Sprite*> textImg;
+	bool mainDir, harvestFlag;
+	void makeNewDogPostion();
+	int dogTime;
+
+	int random(int minN, int maxN);
 };

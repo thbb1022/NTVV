@@ -812,14 +812,43 @@ int Game::Sell(int x)
 void Game::makeNewDogPostion()
 {
 	int duration = (std::clock() - start) / (int)CLOCKS_PER_SEC;
-	if (duration - dogTime >= 5)
+	if (duration - dogTime >= 2)
 	{
 		//x: 0 -> 1000
 		//y: 300 -> 700
 		cout << "pass 5\n";
+		if (dogTurn == 2 || dogTurn == 11)
+		{
+			dog->move_down(200);
 
+		}
+		if (dogTurn == 1 || dogTurn >= 3 & dogTurn <= 7)
+		{
+			dog = new Sprite("Images\\cho.png", dog->getposition());
+			dog->scale(glm::vec2(100));
+			dog->move_right(200);
+			
+		}
+		if (dogTurn == 8 || dogTurn == 15)
+		{
+			dog->move_up(200);
+		}
+		if (dogTurn == 9 || dogTurn == 10 || dogTurn == 12 || dogTurn == 13 || dogTurn == 14)
+		{
+			//lat nguoc lai
+			dog = new Sprite("Images\\cho2.png", dog->getposition());
+			dog->scale(glm::vec2(100));
+			//
+			dog->move_left(200);
+		}
+		if (dogTurn > 15)
+		{
+			dogTurn = 1;
+		}
 		//end
-		dogTime += 5;
+		dogTime += 2;
+		dogTurn++;
+		cout << dog->getposition().x;
 	}
 }
 

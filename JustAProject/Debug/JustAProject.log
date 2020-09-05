@@ -1,6 +1,7 @@
 ﻿  Game.cpp
 e:\work space\ntvv\justaproject\lib.h(17): warning C4067: unexpected tokens following preprocessor directive - expected a newline
-e:\work space\ntvv\justaproject\game.cpp(784): warning C4715: 'Game::cropTree': not all control paths return a value
+e:\work space\ntvv\justaproject\game.cpp(825): warning C4554: '&': check operator precedence for possible error; use parentheses to clarify precedence
 e:\work space\ntvv\justaproject\game.cpp(810): warning C4715: 'Game::Sell': not all control paths return a value
+e:\work space\ntvv\justaproject\game.cpp(784): warning C4715: 'Game::cropTree': not all control paths return a value
   JustAProject.vcxproj -> E:\Work space\NTVV\Debug\JustAProject.exe
   JustAProject.vcxproj -> E:\Work space\NTVV\Debug\JustAProject.pdb (Partial PDB)

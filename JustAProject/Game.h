@@ -107,7 +107,6 @@ private:
 	//
 	bool mainDir, harvestFlag;
 	void makeNewDogPostion();
-	int dogTime;
-
+	int dogTime, dogTurn = 1;
 	int random(int minN, int maxN);
 };
